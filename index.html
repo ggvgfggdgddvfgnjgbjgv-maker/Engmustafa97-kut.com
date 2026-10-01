@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الدعم التقني – الكلية التقنية الكوت | منصة التواصل والدعم الفني</title>
+<meta name="description" content="منصة التواصل والدعم الفني لاستقبال استفسارات الطلبة وملاحظاتهم وشكاواهم - الكلية التقنية الكوت">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+tailwind.config={theme:{extend:{fontFamily:{cairo:['Cairo','Tajawal','sans-serif']},colors:{navy:{950:'#060D24',900:'#0A1A3A',800:'#10254F',700:'#16336B',600:'#1E3F8A',500:'#2A51A8'},gold:{300:'#F5DE8A',400:'#E8C547',500:'#C9A227',600:'#A8861C',700:'#7E6515'},sky2:{400:'#38BDF8',500:'#0EA5E9'}},boxShadow:{soft:'0 10px 40px -10px rgba(10,26,58,.18)',card:'0 8px 30px -6px rgba(10,26,58,.12)',gold:'0 8px 25px -6px rgba(201,162,39,.45)'}}}}
+</script>
+<style>
+*{font-family:'Cairo','Tajawal',sans-serif;-webkit-tap-highlight-color:transparent}
+html{scroll-behavior:smooth}
+body{background:#F2F5FB;color:#0A1A3A;overflow-x:hidden}
+::-webkit-scrollbar{width:10px;height:8px}
+::-webkit-scrollbar-track{background:#E9EDF5}
+::-webkit-scrollbar-thumb{background:linear-gradient(#16336B,#C9A227);border-radius:20px}
+#scrollProgress{position:fixed;top:0;right:0;height:3px;width:0;z-index:120;background:linear-gradient(90deg,#38BDF8,#C9A227,#E8C547);box-shadow:0 0 12px rgba(201,162,39,.5);transition:width .12s linear}
+.gold-text{background:linear-gradient(120deg,#F5DE8A 0%,#E8C547 25%,#C9A227 50%,#F5DE8A 72%,#C9A227 100%);background-size:220% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:shine 5s linear infinite}
+@keyframes shine{to{background-position:220% center}}
+.hero-bg{background:radial-gradient(1000px 520px at 85% -10%,rgba(56,189,248,.26),transparent 62%),radial-gradient(900px 620px at 8% 22%,rgba(201,162,39,.20),transparent 62%),linear-gradient(135deg,#060D24 0%,#0A1A3A 34%,#10254F 66%,#16336B 100%)}
+.mesh{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+.mesh span{position:absolute;border-radius:50%;filter:blur(70px);opacity:.38;animation:floaty 11s ease-in-out infinite}
+@keyframes floaty{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-28px) scale(1.08)}}
+.pattern{background-image:radial-gradient(rgba(255,255,255,.12) 1px,transparent 1px);background-size:22px 22px}
+.glass{background:rgba(255,255,255,.08);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border:1px solid rgba(255,255,255,.14)}
+.kinetic{display:inline-block;opacity:0;transform:translateY(28px) rotate(2deg);animation:kinIn .95s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes kinIn{to{opacity:1;transform:none}}
+.reveal{opacity:0;transform:translateY(30px);transition:opacity .85s cubic-bezier(.16,1,.3,1),transform .85s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:none}
+.card-hover{transition:transform .4s cubic-bezier(.16,1,.3,1),box-shadow .4s ease,border-color .4s ease;position:relative;overflow:hidden}
+.card-hover:hover{transform:translateY(-9px);box-shadow:0 24px 55px -14px rgba(10,26,58,.28);border-color:rgba(201,162,39,.45)}
+.sweep{position:relative;overflow:hidden}
+.sweep::before{content:'';position:absolute;top:0;bottom:0;right:-70%;width:45%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.42),transparent);transform:skewX(-18deg);transition:right .7s ease;pointer-events:none;z-index:2}
+.sweep:hover::before{right:130%}
+.btn-gold{background:linear-gradient(135deg,#E8C547,#C9A227);color:#0A1A3A;transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s,filter .3s;box-shadow:0 10px 26px -8px rgba(201,162,39,.55)}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 18px 40px -8px rgba(201,162,39,.65);filter:brightness(1.05)}
+.btn-gold:active{transform:translateY(-1px) scale(.985)}
+.btn-navy{background:linear-gradient(135deg,#16336B,#0A1A3A);transition:transform .3s cubic-bezier(.16,1,.3,1),box-shadow .3s}
+.btn-navy:hover{transform:translateY(-3px);box-shadow:0 18px 36px -10px rgba(10,26,58,.55)}
+.view{display:none;animation:fadeIn .5s cubic-bezier(.16,1,.3,1)}
+.view.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+@keyframes popIn{0%{transform:scale(.55);opacity:0}70%{transform:scale(1.07)}100%{transform:scale(1);opacity:1}}
+.pop{animation:popIn .55s cubic-bezier(.16,1,.3,1)}
+@keyframes pulseDot{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.55}}
+.live-dot{animation:pulseDot 1.5s infinite}
+.ring-pulse{position:relative}
+.ring-pulse::after{content:'';position:absolute;inset:-6px;border-radius:50%;border:2px solid rgba(74,222,128,.55);animation:ringOut 2.2s ease-out infinite}
+@keyframes ringOut{0%{transform:scale(.6);opacity:.85}100%{transform:scale(1.9);opacity:0}}
+.badge-new{background:linear-gradient(135deg,#EF4444,#DC2626);color:#fff}
+.badge-progress{background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff}
+.badge-answered{background:linear-gradient(135deg,#10B981,#059669);color:#fff}
+.badge-closed{background:linear-gradient(135deg,#64748B,#475569);color:#fff}
+.chat-student{background:linear-gradient(135deg,#16336B,#1E3F8A);color:#fff;border-radius:20px 20px 20px 4px}
+.chat-admin{background:#fff;border:1px solid #E5E9F2;color:#0A1A3A;border-radius:20px 20px 4px 20px;box-shadow:0 6px 18px -6px rgba(0,0,0,.10)}
+.msg-in{animation:msgIn .45s cubic-bezier(.16,1,.3,1) both}
+@keyframes msgIn{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
+.typing span{width:7px;height:7px;background:#94A3B8;border-radius:50%;display:inline-block;animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,60%,100%{opacity:.3;transform:translateY(0)}30%{opacity:1;transform:translateY(-4px)}}
+.sidebar-link{transition:.28s;border-right:3px solid transparent}
+.sidebar-link.active,.sidebar-link:hover{background:linear-gradient(90deg,rgba(201,162,39,.16),transparent);border-right-color:#C9A227;color:#0A1A3A;transform:translateX(-4px)}
+.toast{animation:slideToast .45s cubic-bezier(.16,1,.3,1)}
+@keyframes slideToast{from{transform:translateX(-110%);opacity:0}to{transform:none;opacity:1}}
+.float-wa{animation:waFloat 3.2s ease-in-out infinite}
+@keyframes waFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-9px)}}
+.logo-shine{position:relative;overflow:hidden}
+.logo-shine::after{content:'';position:absolute;top:0;right:-65%;width:42%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.55),transparent);transform:skewX(-20deg);animation:logoshine 4.2s infinite}
+@keyframes logoshine{0%{right:-65%}62%,100%{right:135%}}
+.marquee{display:flex;gap:2.2rem;animation:marq 32s linear infinite;width:max-content}
+@keyframes marq{to{transform:translateX(50%)}}
+.input-f{transition:.25s;border:2px solid #E5E9F2;background:#F7F9FD}
+.input-f:focus{border-color:#C9A227;box-shadow:0 0 0 4px rgba(201,162,39,.16);outline:none;background:#fff}
+table.styled th{background:#0A1A3A;color:#E8C547;font-weight:800;letter-spacing:.2px}
+table.styled tbody tr{transition:.22s}
+table.styled tbody tr:hover{background:#F7F9FD}
+.timeline-line{background:linear-gradient(#C9A227,#38BDF8)}
+.stat-card{position:relative;overflow:hidden;transition:transform .35s cubic-bezier(.16,1,.3,1),box-shadow .35s}
+.stat-card:hover{transform:translateY(-6px);box-shadow:0 22px 45px -14px rgba(10,26,58,.28)}
+.stat-card::after{content:'';position:absolute;top:-32px;left:-32px;width:110px;height:110px;background:radial-gradient(circle,rgba(255,255,255,.28),transparent);border-radius:50%}
+.draw-line{stroke-dasharray:220;stroke-dashoffset:220;transition:stroke-dashoffset 1.1s cubic-bezier(.16,1,.3,1)}
+.visible .draw-line{stroke-dashoffset:0}
+.orbit{position:absolute;border-radius:50%;background:rgba(232,197,71,.75);box-shadow:0 0 12px rgba(232,197,71,.7)}
+@keyframes orbitMove{from{transform:rotate(0deg) translateX(var(--r)) rotate(0deg)}to{transform:rotate(360deg) translateX(var(--r)) rotate(-360deg)}}
+#mainHeader{transition:box-shadow .35s ease,padding .35s ease,background .35s ease}
+#mainHeader.scrolled{box-shadow:0 12px 34px -14px rgba(10,26,58,.28)}
+.count-up{font-variant-numeric:tabular-nums}
+.sidebar-m{position:fixed;bottom:0;right:0;left:0;z-index:45;background:#fff;border-top:2px solid #E8C547;box-shadow:0 -8px 30px rgba(0,0,0,.10)}
+.modal-backdrop{background:rgba(6,13,36,.72);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.divider-gold{height:3px;width:64px;background:linear-gradient(90deg,#E8C547,#C9A227);border-radius:99px}
+.chip{transition:.25s}.chip:hover{transform:translateY(-3px)}
+.faqBody{max-height:0;overflow:hidden;transition:max-height .45s cubic-bezier(.16,1,.3,1),opacity .35s ease;opacity:0}
+.faqBody.open{max-height:340px;opacity:1;padding-bottom:1rem}
+.ticket-row{transition:.25s}
+.ticket-row:hover{transform:translateY(-3px);box-shadow:0 14px 32px -12px rgba(10,26,58,.22);border-color:rgba(201,162,39,.5)}
+@media (max-width:768px){.sidebar-m{display:flex}}
+@media (min-width:769px){.sidebar-m{display:none!important}}
+@media (prefers-reduced-motion:reduce){*{animation-duration:.001s!important;transition-duration:.12s!important}.reveal{opacity:1!important;transform:none!important}.kinetic{opacity:1!important;transform:none!important}}
+@media print{header,footer,#scrollProgress,.sidebar-m,#toasts,.float-wa,#adminTicketTools,#replyArea,#topbar{display:none!important}.view{display:none!important}#view-ticket{display:block!important}body{background:#fff}}
+</style>
+</head>
+<body class="font-cairo">
+<div id="scrollProgress"></div>
+
+<!-- TOP BAR -->
+<div id="topbar" class="bg-navy-950 text-white text-xs sm:text-sm py-2 px-4 relative z-50">
+<div class="max-w-7xl mx-auto flex items-center justify-between gap-3">
+<div class="flex items-center gap-2"><span class="w-2 h-2 rounded-full bg-green-400 live-dot inline-block ring-pulse"></span><span class="text-gray-300">النظام يعمل الآن — <span id="clockTop" class="text-gold-400 font-bold">--:--</span></span></div>
+<div class="hidden sm:flex items-center gap-4 text-gray-300"><span><i class="fa-solid fa-building-columns text-gold-400 ml-1"></i> الكلية التقنية الكوت</span><span><i class="fa-solid fa-phone text-gold-400 ml-1"></i> <span dir="ltr">07815561725</span></span></div>
+<div class="flex items-center gap-2"><span class="bg-green-500/20 text-green-300 px-2.5 py-0.5 rounded-full border border-green-500/30 text-[11px] font-bold"><i class="fa-solid fa-lock ml-1"></i> اتصال آمن </span></div>
+</div>
+</div>
+
+<!-- HEADER -->
+<header id="mainHeader" class="sticky top-0 z-40 bg-white/95 backdrop-blur-xl border-b border-gray-100">
+<div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-3">
+<div class="flex items-center gap-3 cursor-pointer group" onclick="go('home')">
+<div class="logo-shine w-14 h-14 sm:w-16 sm:h-16 rounded-2xl overflow-hidden shrink-0 shadow-card border-2 border-gold-500/40 bg-navy-900 flex items-center justify-center">
+<svg viewBox="0 0 100 100" class="w-full h-full" aria-label="شعار المنصة">
+<defs><linearGradient id="lg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F5DE8A"/><stop offset="1" stop-color="#A8861C"/></linearGradient><linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16336B"/><stop offset="1" stop-color="#060D24"/></linearGradient></defs>
+<rect width="100" height="100" fill="url(#lg2)"/>
+<circle cx="50" cy="42" r="27" fill="none" stroke="url(#lg1)" stroke-width="2.5" opacity=".65"/>
+<circle cx="50" cy="42" r="20" fill="none" stroke="#38BDF8" stroke-width="1" stroke-dasharray="4 3" opacity=".75"/>
+<path d="M50 27 L72 36 L50 45 L28 36 Z" fill="url(#lg1)"/>
+<path d="M38 40 v11 c0 4.2 5.2 7 12 7 s12-2.8 12-7 v-11 l-12 4.6 Z" fill="#fff" opacity=".93"/>
+<rect x="68" y="36" width="2.8" height="14" rx="1.4" fill="url(#lg1)"/><circle cx="69.4" cy="53" r="3.2" fill="url(#lg1)"/>
+<path d="M32 70 h36 M36 75.5 h28" stroke="url(#lg1)" stroke-width="2.6" stroke-linecap="round"/>
+<circle cx="22" cy="22" r="2" fill="#38BDF8"/><circle cx="79" cy="20" r="2" fill="#38BDF8"/><circle cx="20" cy="73" r="2" fill="#38BDF8"/><circle cx="80" cy="71" r="2" fill="#38BDF8"/>
+</svg>
+</div>
+<div><h1 class="font-black text-navy-900 text-base sm:text-xl leading-tight group-hover:text-navy-700 transition">الدعم التقني <span class="text-gold-600">– الكلية التقنية الكوت</span></h1><p class="text-[11px] sm:text-xs text-gray-500 font-medium">منصة التواصل والدعم الفني للطلبة</p></div>
+</div>
+<nav class="hidden lg:flex items-center gap-1 text-sm font-bold text-navy-900">
+<button onclick="go('home')" class="px-4 py-2 rounded-xl hover:bg-navy-900 hover:text-white transition">الرئيسية</button>
+<button onclick="scrollToId('depts')" class="px-4 py-2 rounded-xl hover:bg-navy-900 hover:text-white transition">الأقسام</button>
+<button onclick="scrollToId('how')" class="px-4 py-2 rounded-xl hover:bg-navy-900 hover:text-white transition">كيف تعمل المنصة</button>
+<button onclick="scrollToId('faq')" class="px-4 py-2 rounded-xl hover:bg-navy-900 hover:text-white transition">الأسئلة الشائعة</button>
+</nav>
+<div class="flex items-center gap-2">
+<div id="guestBtns" class="flex items-center gap-2">
+<button onclick="go('login')" class="hidden sm:inline-flex px-4 py-2.5 rounded-xl font-bold text-navy-900 border-2 border-navy-900/15 hover:border-navy-900 transition text-sm"><i class="fa-solid fa-right-to-bracket ml-2"></i> تسجيل الدخول </button>
+<button onclick="go('register')" class="px-4 py-2.5 rounded-xl font-bold btn-gold text-sm"><i class="fa-solid fa-user-plus ml-2"></i> إنشاء حساب </button>
+</div>
+<div id="userMenu" class="hidden items-center gap-2">
+<button onclick="go('notifications')" class="relative w-11 h-11 rounded-xl bg-navy-900/5 hover:bg-navy-900 hover:text-white transition flex items-center justify-center text-navy-900"><i class="fa-solid fa-bell"></i><span id="bellBadge" class="hidden absolute -top-1 -left-1 min-w-[20px] h-5 px-1 rounded-full bg-red-500 text-white text-[11px] font-black items-center justify-center">0</span></button>
+<button onclick="go(dashTarget())" class="hidden sm:flex items-center gap-2 pl-2 pr-1 py-1 rounded-xl bg-navy-900 text-white hover:bg-navy-700 transition"><span id="hdrAvatar" class="w-9 h-9 rounded-lg bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900 font-black flex items-center justify-center">ط</span><span class="text-sm font-bold pl-2 max-w-[110px] truncate" id="hdrName">طالب</span></button>
+<button onclick="logout()" title="تسجيل الخروج" class="w-11 h-11 rounded-xl bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition flex items-center justify-center"><i class="fa-solid fa-power-off"></i></button>
+</div>
+<button onclick="toggleMobile()" class="lg:hidden w-11 h-11 rounded-xl bg-navy-900 text-white flex items-center justify-center"><i class="fa-solid fa-bars"></i></button>
+</div>
+</div>
+<div id="mobileMenu" class="hidden lg:hidden border-t bg-white px-4 py-3 space-y-2">
+<button onclick="go('home')" class="w-full text-right px-4 py-3 rounded-xl bg-gray-50 font-bold">الرئيسية</button>
+<button onclick="scrollToId('depts')" class="w-full text-right px-4 py-3 rounded-xl bg-gray-50 font-bold">الأقسام العلمية</button>
+<button onclick="go('login')" class="w-full text-right px-4 py-3 rounded-xl bg-gray-50 font-bold">تسجيل الدخول</button>
+<button onclick="go('register')" class="w-full text-right px-4 py-3 rounded-xl btn-gold font-bold text-center">إنشاء حساب طالب</button>
+<button onclick="go('myTickets')" class="w-full text-right px-4 py-3 rounded-xl bg-navy-900 text-white font-bold text-center">متابعة طلباتي</button>
+</div>
+</header>
+
+<main class="min-h-[70vh]">
+
+<!-- HOME -->
+<section id="view-home" class="view active">
+<div class="hero-bg relative text-white overflow-hidden">
+<div class="mesh"><span style="width:430px;height:430px;background:#0EA5E9;top:-130px;left:-90px"></span><span style="width:390px;height:390px;background:#C9A227;bottom:-150px;right:-70px;animation-delay:2s"></span><span style="width:210px;height:210px;background:#fff;top:42%;right:42%;opacity:.08;animation-delay:4s"></span></div>
+<div class="absolute inset-0 pattern opacity-60"></div>
+<div class="absolute inset-0 pointer-events-none hidden md:block"><div class="orbit" style="--r:120px;width:6px;height:6px;top:22%;right:18%;animation:orbitMove 16s linear infinite"></div><div class="orbit" style="--r:180px;width:5px;height:5px;top:62%;right:32%;animation:orbitMove 22s linear infinite reverse;background:rgba(56,189,248,.8)"></div><div class="orbit" style="--r:96px;width:4px;height:4px;top:40%;right:62%;animation:orbitMove 13s linear infinite"></div></div>
+<div class="max-w-7xl mx-auto px-4 py-16 lg:py-24 grid lg:grid-cols-2 gap-12 items-center relative">
+<div>
+<div class="inline-flex items-center gap-2 glass rounded-full px-4 py-2 text-sm font-bold mb-6"><span class="w-2.5 h-2.5 rounded-full bg-green-400 live-dot"></span><span class="text-gold-300">المنصة الرسمية للدعم الفني – الكلية التقنية الكوت</span></div>
+<h2 class="text-3xl sm:text-4xl lg:text-5xl font-black leading-[1.45] mb-5"><span class="kinetic" style="animation-delay:.05s">منصة التواصل والدعم الفني</span><br><span class="kinetic gold-text" style="animation-delay:.18s">لاستقبال استفسارات الطلبة</span><br><span class="kinetic" style="animation-delay:.31s">وملاحظاتهم وشكاواهم</span></h2>
+<p class="text-gray-300 text-base lg:text-lg leading-loose mb-8 max-w-xl">نظام جامعي متكامل يتيح لطلبة الكلية التقنية الكوت التواصل المباشر مع الأستاذ المسؤول عن الدعم التقني، وتقديم الشكاوى والاستفسارات ومتابعة الردود لحظة بلحظة وبسرية تامة.</p>
+<div class="grid sm:grid-cols-2 gap-3 max-w-xl mb-8">
+<button onclick="handleNewTicket()" class="btn-gold rounded-2xl px-5 py-4 font-black text-base flex items-center justify-center gap-2"><i class="fa-solid fa-paper-plane"></i> تقديم شكوى أو استفسار </button>
+<button onclick="go('myTickets')" class="glass rounded-2xl px-5 py-4 font-black text-base flex items-center justify-center gap-2 hover:bg-white/15 transition"><i class="fa-solid fa-magnifying-glass"></i> متابعة طلباتي </button>
+<button onclick="go('login')" class="rounded-2xl px-5 py-4 font-black text-base bg-white text-navy-900 flex items-center justify-center gap-2 hover:bg-gold-300 transition"><i class="fa-solid fa-right-to-bracket"></i> تسجيل الدخول </button>
+<button onclick="go('register')" class="rounded-2xl px-5 py-4 font-black text-base border-2 border-gold-400 text-gold-300 flex items-center justify-center gap-2 hover:bg-gold-400 hover:text-navy-900 transition"><i class="fa-solid fa-user-plus"></i> إنشاء حساب طالب </button>
+</div>
+<div class="flex flex-wrap items-center gap-6 text-sm">
+<div class="flex items-center gap-2"><div class="flex -space-x-3 space-x-reverse"><div class="w-9 h-9 rounded-full bg-gradient-to-br from-sky2-400 to-navy-600 border-2 border-white flex items-center justify-center font-black text-xs">ص</div><div class="w-9 h-9 rounded-full bg-gradient-to-br from-gold-400 to-gold-600 border-2 border-white flex items-center justify-center font-black text-xs text-navy-900">ح</div><div class="w-9 h-9 rounded-full bg-gradient-to-br from-green-400 to-green-600 border-2 border-white flex items-center justify-center font-black text-xs">ك</div></div><span class="text-gray-300 font-bold"><b id="heroUsers" class="text-white count-up">0</b> طالب مسجل</span></div>
+<div class="flex items-center gap-2 text-gray-300"><i class="fa-solid fa-shield-halved text-green-400 text-lg"></i><span class="font-bold">خصوصية وسرية تامة</span></div>
+</div>
+</div>
+<div class="relative">
+<div class="glass rounded-3xl p-5 sm:p-7 shadow-2xl relative">
+<div class="flex items-center justify-between mb-4"><div class="flex items-center gap-2"><span class="w-3 h-3 rounded-full bg-red-400"></span><span class="w-3 h-3 rounded-full bg-yellow-400"></span><span class="w-3 h-3 rounded-full bg-green-400"></span></div><span class="text-xs font-bold text-gray-300">لوحة متابعة مباشرة</span></div>
+<div class="bg-white rounded-2xl p-4 text-navy-900 mb-3"><div class="flex items-center justify-between mb-2"><span class="font-black text-sm">طلب جديد #<span id="heroTickId">KUT-2026-0001</span></span><span class="badge-new text-[11px] font-black px-3 py-1 rounded-full">جديد</span></div><p class="text-xs text-gray-500 leading-relaxed">استفسار حول الجدول الدراسي لقسم تقنيات المحاسبة – المرحلة الثانية...</p><div class="flex items-center justify-between mt-3 text-[11px] text-gray-400"><span><i class="fa-regular fa-clock ml-1"></i> قبل دقيقتين</span><span class="text-green-600 font-bold"><i class="fa-solid fa-check-double ml-1"></i> تم الاستلام</span></div></div>
+<div class="bg-white/10 rounded-2xl p-4 border border-white/10"><div class="flex items-center gap-3 mb-3"><div class="w-11 h-11 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 flex items-center justify-center text-navy-900 font-black text-lg"><i class="fa-solid fa-user-tie"></i></div><div><p class="font-black text-sm">م. مصطفى جاسم محمد</p><p class="text-xs text-gold-300">الأستاذ المسؤول عن الدعم التقني • متصل الآن</p></div><span class="mr-auto w-2.5 h-2.5 rounded-full bg-green-400 live-dot"></span></div><div class="bg-white text-navy-900 rounded-2xl rounded-tr-sm p-3 text-sm font-medium shadow">أهلاً بك، تم استلام طلبك وسيتم الرد عليك بأسرع وقت ممكن ✅</div></div>
+<div class="grid grid-cols-3 gap-2 mt-3"><div class="bg-white rounded-xl p-3 text-center"><p class="font-black text-navy-900 text-lg count-up" id="statH1">0</p><p class="text-[11px] text-gray-500 font-bold">إجمالي الطلبات</p></div><div class="bg-white rounded-xl p-3 text-center"><p class="font-black text-green-600 text-lg count-up" id="statH2">0</p><p class="text-[11px] text-gray-500 font-bold">تمت الإجابة</p></div><div class="bg-white rounded-xl p-3 text-center"><p class="font-black text-gold-600 text-lg">24/7</p><p class="text-[11px] text-gray-500 font-bold">متاح دائماً</p></div></div>
+</div>
+<div class="absolute -top-5 -right-3 sm:-right-7 bg-white rounded-2xl shadow-card px-4 py-3 flex items-center gap-2 pop"><span class="w-9 h-9 rounded-xl bg-green-100 text-green-600 flex items-center justify-center"><i class="fa-solid fa-bell"></i></span><div><p class="text-xs font-black text-navy-900">إشعار فوري</p><p class="text-[11px] text-gray-500">رد جديد على طلبك</p></div></div>
+<div class="absolute -bottom-5 -left-2 sm:-left-6 bg-white rounded-2xl shadow-card px-4 py-3 flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center"><i class="fa-solid fa-lock"></i></span><div><p class="text-xs font-black text-navy-900">تشفير وحماية</p><p class="text-[11px] text-gray-500">بياناتك بأمان تام</p></div></div>
+</div>
+</div>
+<div class="bg-navy-950/60 backdrop-blur border-t border-white/10 py-3 overflow-hidden relative"><div class="marquee text-sm font-bold text-gold-300"><span>🎓 الكلية التقنية الكوت ترحب بطلبتها الأعزاء</span><span>•</span><span>📩 قدّم شكواك أو استفسارك وسيتم الرد عليك من قبل الأستاذ المسؤول</span><span>•</span><span>🔔 إشعارات فورية عند كل رد جديد</span><span>•</span><span>🔒 سرية تامة لجميع المراسلات</span><span>•</span><span>🎓 الكلية التقنية الكوت ترحب بطلبتها الأعزاء</span><span>•</span><span>📩 قدّم شكواك أو استفسارك وسيتم الرد عليك من قبل الأستاذ المسؤول</span><span>•</span><span>🔔 إشعارات فورية عند كل رد جديد</span><span>•</span><span>🔒 سرية تامة لجميع المراسلات</span></div></div>
+</div>
+
+<!-- ABOUT -->
+<div class="max-w-7xl mx-auto px-4 py-16">
+<div class="grid lg:grid-cols-2 gap-8 items-stretch">
+<div class="reveal bg-white rounded-3xl shadow-card p-7 sm:p-9 border border-gray-100 relative overflow-hidden sweep">
+<div class="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-gold-400/25 to-transparent rounded-bl-full"></div>
+<span class="inline-flex items-center gap-2 bg-navy-900 text-gold-400 text-xs font-black px-4 py-2 rounded-full mb-5"><i class="fa-solid fa-user-tie"></i> المشرف على المنصة </span>
+<h3 class="text-2xl sm:text-3xl font-black text-navy-900 mb-4 leading-snug">التواصل المباشر مع <span class="text-gold-600">الأستاذ المسؤول</span> عن الدعم التقني</h3>
+<div class="divider-gold mb-5"></div>
+<p class="text-gray-600 leading-loose mb-6">هذه المنصة مخصصة للتواصل المباشر مع <b class="text-navy-900">الأستاذ مصطفى جاسم محمد</b> المسؤول عن الدعم التقني في الكلية التقنية الكوت. يمكن للطلبة طرح الاستفسارات الأكاديمية والتقنية والإدارية، وتقديم الشكاوى والملاحظات، ومتابعة الردود ضمن محادثة خاصة وآمنة لكل طلب.</p>
+<div class="grid sm:grid-cols-2 gap-3">
+<div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-3 chip"><span class="w-10 h-10 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center shrink-0"><i class="fa-solid fa-comments"></i></span><p class="text-sm font-bold">محادثة خاصة لكل طلب</p></div>
+<div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-3 chip"><span class="w-10 h-10 rounded-xl bg-green-600 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-bolt"></i></span><p class="text-sm font-bold">إشعارات فورية بالردود</p></div>
+<div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-3 chip"><span class="w-10 h-10 rounded-xl bg-gold-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-hashtag"></i></span><p class="text-sm font-bold">رقم تتبع لكل طلب</p></div>
+<div class="flex items-center gap-3 bg-gray-50 rounded-2xl p-3 chip"><span class="w-10 h-10 rounded-xl bg-sky2-500 text-white flex items-center justify-center shrink-0"><i class="fa-solid fa-eye-slash"></i></span><p class="text-sm font-bold">سرية تامة للبيانات</p></div>
+</div>
+</div>
+<div class="reveal relative rounded-3xl overflow-hidden shadow-card min-h-[360px] group">
+<img src="https://images.unsplash.com/photo-1562774053-701939374585?w=1000&q=80&auto=format&fit=crop" alt="الكلية التقنية الكوت" class="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition duration-[900ms]" onerror="this.style.display='none'">
+<div class="absolute inset-0 bg-gradient-to-t from-navy-950 via-navy-900/60 to-transparent"></div>
+<div class="absolute bottom-0 p-7 text-white"><span class="bg-gold-500 text-navy-900 text-xs font-black px-3 py-1.5 rounded-full">الكلية التقنية الكوت</span><h4 class="text-xl sm:text-2xl font-black mt-3 mb-2">بيئة أكاديمية حديثة.. ودعم فني على مدار الساعة</h4><div class="flex flex-wrap gap-2 mt-4"><span class="glass px-3 py-1.5 rounded-full text-xs font-bold">4 أقسام علمية</span><span class="glass px-3 py-1.5 rounded-full text-xs font-bold">دراسة صباحية ومسائية</span><span class="glass px-3 py-1.5 rounded-full text-xs font-bold">رد سريع وموثوق</span></div></div>
+</div>
+</div>
+</div>
+
+<!-- DEPARTMENTS -->
+<div id="depts" class="bg-white border-y border-gray-100 py-16">
+<div class="max-w-7xl mx-auto px-4">
+<div class="text-center mb-12 reveal"><span class="bg-gold-500/15 text-gold-700 font-black text-sm px-5 py-2 rounded-full">الأقسام العلمية المشمولة</span><h3 class="text-2xl sm:text-4xl font-black text-navy-900 mt-4">المنصة تخدم طلبة جميع الأقسام</h3><div class="flex justify-center mt-4"><svg width="220" height="12" viewBox="0 0 220 12" fill="none"><path class="draw-line" d="M4 8 C60 1, 160 1, 216 8" stroke="#C9A227" stroke-width="3.5" stroke-linecap="round"/></svg></div><p class="text-gray-500 mt-2">اختر قسمك عند تقديم الطلب ليصل إلى الجهة الصحيحة</p></div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+<div class="reveal card-hover sweep bg-gradient-to-b from-white to-gray-50 rounded-3xl p-7 border border-gray-100 shadow-card text-center"><div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-green-500 to-green-700 text-white flex items-center justify-center text-2xl mb-5 shadow-lg"><i class="fa-solid fa-heart-pulse"></i></div><h4 class="font-black text-navy-900 mb-2">قسم تقنيات صحة المجتمع</h4><p class="text-sm text-gray-500 leading-relaxed">الدعم الأكاديمي والفني لطلبة القسم</p></div>
+<div class="reveal card-hover sweep bg-gradient-to-b from-white to-gray-50 rounded-3xl p-7 border border-gray-100 shadow-card text-center" style="transition-delay:.08s"><div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-navy-600 to-navy-900 text-gold-400 flex items-center justify-center text-2xl mb-5 shadow-lg"><i class="fa-solid fa-calculator"></i></div><h4 class="font-black text-navy-900 mb-2">قسم تقنيات المحاسبة</h4><p class="text-sm text-gray-500 leading-relaxed">الدعم الأكاديمي والفني لطلبة القسم</p></div>
+<div class="reveal card-hover sweep bg-gradient-to-b from-white to-gray-50 rounded-3xl p-7 border border-gray-100 shadow-card text-center" style="transition-delay:.16s"><div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900 flex items-center justify-center text-2xl mb-5 shadow-lg"><i class="fa-solid fa-gears"></i></div><h4 class="font-black text-navy-900 mb-2">قسم تقنيات هندسة الكهروميكانيك</h4><p class="text-sm text-gray-500 leading-relaxed">الدعم الأكاديمي والفني لطلبة القسم</p></div>
+<div class="reveal card-hover sweep bg-gradient-to-b from-white to-gray-50 rounded-3xl p-7 border border-gray-100 shadow-card text-center" style="transition-delay:.24s"><div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-sky2-400 to-navy-600 text-white flex items-center justify-center text-2xl mb-5 shadow-lg"><i class="fa-solid fa-bolt"></i></div><h4 class="font-black text-navy-900 mb-2">قسم تقنيات هندسة الوقود والطاقة</h4><p class="text-sm text-gray-500 leading-relaxed">الدعم الأكاديمي والفني لطلبة القسم</p></div>
+</div>
+</div>
+</div>
+
+<!-- HOW -->
+<div id="how" class="max-w-7xl mx-auto px-4 py-16">
+<div class="text-center mb-14 reveal"><span class="bg-navy-900 text-gold-400 font-black text-sm px-5 py-2 rounded-full">خطوات بسيطة وواضحة</span><h3 class="text-2xl sm:text-4xl font-black text-navy-900 mt-4">كيف تعمل المنصة؟</h3><div class="flex justify-center mt-4"><svg width="220" height="12" viewBox="0 0 220 12" fill="none"><path class="draw-line" d="M4 8 C60 1, 160 1, 216 8" stroke="#16336B" stroke-width="3.5" stroke-linecap="round"/></svg></div></div>
+<div class="relative"><div class="hidden lg:block absolute top-[58px] right-[12%] left-[12%] h-[3px] timeline-line opacity-30 rounded-full"></div>
+<div class="grid md:grid-cols-4 gap-6 relative">
+<div class="reveal relative bg-white rounded-3xl p-7 shadow-card border border-gray-100 text-center card-hover"><div class="absolute -top-4 right-1/2 translate-x-1/2 w-10 h-10 rounded-full bg-navy-900 text-gold-400 font-black flex items-center justify-center border-4 border-[#F2F5FB]">1</div><div class="w-14 h-14 mx-auto mt-4 rounded-2xl bg-navy-900/5 text-navy-900 flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-user-plus"></i></div><h4 class="font-black mb-2">أنشئ حسابك</h4><p class="text-sm text-gray-500 leading-relaxed">سجّل بريدك الإلكتروني خلال دقيقة واحدة</p></div>
+<div class="reveal relative bg-white rounded-3xl p-7 shadow-card border border-gray-100 text-center card-hover" style="transition-delay:.1s"><div class="absolute -top-4 right-1/2 translate-x-1/2 w-10 h-10 rounded-full bg-navy-900 text-gold-400 font-black flex items-center justify-center border-4 border-[#F2F5FB]">2</div><div class="w-14 h-14 mx-auto mt-4 rounded-2xl bg-gold-500/15 text-gold-600 flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-pen-to-square"></i></div><h4 class="font-black mb-2">قدّم طلبك</h4><p class="text-sm text-gray-500 leading-relaxed">املأ الاستمارة بقسمك ومرحلتك وتفاصيل مشكلتك</p></div>
+<div class="reveal relative bg-white rounded-3xl p-7 shadow-card border border-gray-100 text-center card-hover" style="transition-delay:.2s"><div class="absolute -top-4 right-1/2 translate-x-1/2 w-10 h-10 rounded-full bg-navy-900 text-gold-400 font-black flex items-center justify-center border-4 border-[#F2F5FB]">3</div><div class="w-14 h-14 mx-auto mt-4 rounded-2xl bg-sky2-500/15 text-sky2-500 flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-bell"></i></div><h4 class="font-black mb-2">استلم إشعاراً</h4><p class="text-sm text-gray-500 leading-relaxed">يصلك إشعار فوري عند رد الأستاذ على طلبك</p></div>
+<div class="reveal relative bg-white rounded-3xl p-7 shadow-card border border-gray-100 text-center card-hover" style="transition-delay:.3s"><div class="absolute -top-4 right-1/2 translate-x-1/2 w-10 h-10 rounded-full bg-green-600 text-white font-black flex items-center justify-center border-4 border-[#F2F5FB]">4</div><div class="w-14 h-14 mx-auto mt-4 rounded-2xl bg-green-500/15 text-green-600 flex items-center justify-center text-2xl mb-4"><i class="fa-solid fa-comments"></i></div><h4 class="font-black mb-2">تابع المحادثة</h4><p class="text-sm text-gray-500 leading-relaxed">تواصل مع الأستاذ حتى إغلاق الطلب وحل مشكلتك</p></div>
+</div></div>
+</div>
+
+<!-- STATS -->
+<div class="max-w-7xl mx-auto px-4 pb-16">
+<div class="reveal rounded-3xl overflow-hidden shadow-card"><div class="bg-gradient-to-l from-navy-950 via-navy-900 to-navy-700 text-white p-8 sm:p-10 relative"><div class="absolute inset-0 pattern opacity-40"></div><div class="relative grid grid-cols-2 lg:grid-cols-4 gap-6 text-center"><div><p class="text-3xl sm:text-4xl font-black text-gold-400 count-up" data-count="4">0</p><p class="text-sm text-gray-300 font-bold mt-1">أقسام علمية</p></div><div><p class="text-3xl sm:text-4xl font-black text-gold-400 count-up" data-count="24">0</p><p class="text-sm text-gray-300 font-bold mt-1">ساعة دعم يومياً</p></div><div><p class="text-3xl sm:text-4xl font-black text-gold-400 count-up" data-count="100">0</p><p class="text-sm text-gray-300 font-bold mt-1">٪ نسبة السرية</p></div><div><p class="text-3xl sm:text-4xl font-black text-gold-400 count-up" data-count="1">0</p><p class="text-sm text-gray-300 font-bold mt-1">قناة تواصل مباشرة</p></div></div></div></div>
+</div>
+
+<!-- FAQ -->
+<div id="faq" class="bg-navy-950 text-white py-16 relative overflow-hidden"><div class="absolute inset-0 pattern opacity-40"></div>
+<div class="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-10 relative">
+<div class="reveal"><h3 class="text-2xl sm:text-3xl font-black mb-2">الأسئلة <span class="gold-text">الشائعة</span></h3><div class="divider-gold mb-7"></div>
+<div class="space-y-3" id="faqList">
+<div class="glass rounded-2xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-right p-4 font-bold flex items-center justify-between gap-3">هل يمكنني تقديم أكثر من طلب؟ <i class="fa-solid fa-chevron-down text-gold-400 transition"></i></button><div class="faqBody px-4 text-sm text-gray-300 leading-loose">نعم، يمكنك تقديم عدد غير محدود من الطلبات، ولكل طلب رقم تتبع ومحادثة خاصة مستقلة.</div></div>
+<div class="glass rounded-2xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-right p-4 font-bold flex items-center justify-between gap-3">هل يرى الطلاب الآخرون طلباتي؟ <i class="fa-solid fa-chevron-down text-gold-400 transition"></i></button><div class="faqBody px-4 text-sm text-gray-300 leading-loose">إطلاقاً. لا يرى طلبك وردوده سواك والأستاذ المسؤول فقط، وبسرية تامة.</div></div>
+<div class="glass rounded-2xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-right p-4 font-bold flex items-center justify-between gap-3">كيف أعرف أن الأستاذ رد على طلبي؟ <i class="fa-solid fa-chevron-down text-gold-400 transition"></i></button><div class="faqBody px-4 text-sm text-gray-300 leading-loose">سيصلك إشعار فوري داخل حسابك مع شارة بعدد الردود غير المقروءة، ويمكنك فتح المحادثة مباشرة.</div></div>
+<div class="glass rounded-2xl overflow-hidden"><button onclick="toggleFaq(this)" class="w-full text-right p-4 font-bold flex items-center justify-between gap-3">ما هي حالات الطلب؟ <i class="fa-solid fa-chevron-down text-gold-400 transition"></i></button><div class="faqBody px-4 text-sm text-gray-300 leading-loose">جديد، قيد المعالجة، تمت الإجابة، مغلق. وتتحدث الحالة تلقائياً مع سير المحادثة.</div></div>
+</div></div>
+<div class="reveal flex flex-col justify-center"><div class="rounded-3xl p-8 bg-gradient-to-br from-gold-400 via-gold-500 to-gold-600 text-navy-900 shadow-gold relative overflow-hidden sweep"><i class="fa-solid fa-quote-right absolute top-5 left-6 text-5xl opacity-20"></i><h4 class="text-2xl sm:text-3xl font-black mb-3">جاهز لحل مشكلتك الأكاديمية؟</h4><p class="font-bold text-navy-900/80 mb-6 leading-loose">انضم إلى مئات الطلبة الذين يستخدمون المنصة يومياً للتواصل مع الدعم التقني.</p><div class="flex flex-col sm:flex-row gap-3"><button onclick="go('register')" class="flex-1 bg-navy-950 text-white rounded-2xl py-4 font-black hover:bg-navy-900 transition"><i class="fa-solid fa-rocket ml-2"></i> ابدأ الآن مجاناً </button><a href="https://wa.me/9647815561725?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A3%D8%AD%D8%AA%D8%A7%D8%AC%20%D8%A5%D9%84%D9%89%20%D9%85%D8%B3%D8%A7%D8%B9%D8%AF%D8%A9" target="_blank" rel="noopener" class="flex-1 bg-white/90 text-navy-900 rounded-2xl py-4 font-black text-center hover:bg-white transition"><i class="fa-brands fa-whatsapp ml-2 text-green-600"></i> واتساب مباشر </a></div></div></div>
+</div></div>
+</section>
+
+<!-- LOGIN -->
+<section id="view-login" class="view">
+<div class="max-w-6xl mx-auto px-4 py-12 grid lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-card bg-white border border-gray-100 my-8">
+<div class="hero-bg text-white p-8 sm:p-12 relative overflow-hidden hidden lg:flex flex-col justify-center"><div class="mesh"><span style="width:320px;height:320px;background:#C9A227;bottom:-110px;right:-90px"></span></div><div class="absolute inset-0 pattern"></div><div class="relative"><div class="w-20 h-20 rounded-3xl bg-white/10 border border-white/20 flex items-center justify-center text-3xl text-gold-400 mb-6"><i class="fa-solid fa-right-to-bracket"></i></div><h2 class="text-3xl font-black mb-3">مرحباً بعودتك <span class="gold-text">مجدداً</span></h2><p class="text-gray-300 leading-loose mb-6">سجّل الدخول إلى حسابك لمتابعة طلباتك وقراءة ردود الأستاذ المسؤول، أو لإدارة المنصة إذا كنت الأستاذ المشرف.</p><div class="space-y-3 text-sm"><div class="flex items-center gap-3 glass rounded-xl p-3"><i class="fa-solid fa-bolt text-gold-400"></i> وصول فوري إلى جميع طلباتك السابقة</div><div class="flex items-center gap-3 glass rounded-xl p-3"><i class="fa-solid fa-bell text-gold-400"></i> إشعارات لحظية بالردود الجديدة</div><div class="flex items-center gap-3 glass rounded-xl p-3"><i class="fa-solid fa-shield-halved text-gold-400"></i> حماية كاملة لبيانات الدخول</div></div></div></div>
+<div class="p-7 sm:p-12"><h2 class="text-2xl sm:text-3xl font-black text-navy-900 mb-2">تسجيل الدخول</h2><p class="text-gray-500 text-sm mb-7">أدخل بريدك الإلكتروني وكلمة المرور للمتابعة</p><div id="loginAlert" class="hidden mb-4 rounded-2xl p-4 text-sm font-bold"></div>
+<form onsubmit="doLogin(event)" class="space-y-4">
+<div><label class="font-bold text-sm mb-2 block">البريد الإلكتروني <span class="text-red-500">*</span></label><div class="relative"><i class="fa-solid fa-envelope absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input id="loginEmail" type="email" required dir="ltr" style="text-align:right" placeholder="example@mail.com" class="input-f w-full rounded-2xl pr-11 pl-4 py-3.5 font-bold text-sm"></div></div>
+<div><label class="font-bold text-sm mb-2 block">كلمة المرور <span class="text-red-500">*</span></label><div class="relative"><i class="fa-solid fa-lock absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input id="loginPass" type="password" required placeholder="••••••••" class="input-f w-full rounded-2xl pr-11 pl-12 py-3.5 font-bold text-sm"><button type="button" onclick="togglePass('loginPass',this)" class="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-xl bg-gray-100 text-gray-500 hover:bg-navy-900 hover:text-white transition"><i class="fa-solid fa-eye"></i></button></div></div>
+<div class="flex items-center justify-between text-sm"><label class="flex items-center gap-2 font-bold text-gray-600 cursor-pointer"><input id="rememberMe" type="checkbox" checked class="w-4 h-4 accent-[#C9A227]"> تذكرني </label><button type="button" onclick="openForgot()" class="text-navy-600 font-bold hover:underline">نسيت كلمة المرور؟</button></div>
+<button id="loginBtn" class="w-full btn-navy text-white rounded-2xl py-4 font-black text-base"><i class="fa-solid fa-right-to-bracket ml-2"></i> دخول آمن </button>
+</form>
+<div class="flex items-center gap-3 my-6"><div class="flex-1 h-px bg-gray-200"></div><span class="text-xs text-gray-400 font-bold">أو</span><div class="flex-1 h-px bg-gray-200"></div></div>
+<p class="text-center text-sm text-gray-600">ليس لديك حساب؟ <button onclick="go('register')" class="text-gold-600 font-black hover:underline">إنشاء حساب طالب جديد</button></p>
+<div class="mt-6 bg-navy-900/5 rounded-2xl p-4 text-xs text-gray-500 leading-relaxed"><i class="fa-solid fa-circle-info text-navy-600 ml-1"></i> يتم تشفير كلمات المرور قبل تخزينها ولا تُحفظ كنص صريح. بعد 5 محاولات فاشلة يتم إيقاف الدخول مؤقتاً لحماية حسابك.</div>
+</div></div>
+</section>
+
+<!-- REGISTER -->
+<section id="view-register" class="view">
+<div class="max-w-6xl mx-auto px-4 py-12 grid lg:grid-cols-2 gap-0 rounded-3xl overflow-hidden shadow-card bg-white border border-gray-100 my-8">
+<div class="p-7 sm:p-12 order-2 lg:order-1"><h2 class="text-2xl sm:text-3xl font-black text-navy-900 mb-2">إنشاء حساب طالب</h2><p class="text-gray-500 text-sm mb-7">أنشئ حسابك المجاني وابدأ بتقديم طلباتك فوراً</p><div id="regAlert" class="hidden mb-4 rounded-2xl p-4 text-sm font-bold"></div>
+<form onsubmit="doRegister(event)" class="space-y-4">
+<div><label class="font-bold text-sm mb-2 block">الاسم الكامل <span class="text-red-500">*</span></label><div class="relative"><i class="fa-solid fa-user absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input id="regName" required minlength="3" placeholder="مثال: علي حسين محمد" class="input-f w-full rounded-2xl pr-11 pl-4 py-3.5 font-bold text-sm"></div></div>
+<div><label class="font-bold text-sm mb-2 block">البريد الإلكتروني <span class="text-red-500">*</span></label><div class="relative"><i class="fa-solid fa-envelope absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input id="regEmail" type="email" required dir="ltr" style="text-align:right" placeholder="example@mail.com" class="input-f w-full rounded-2xl pr-11 pl-4 py-3.5 font-bold text-sm"></div></div>
+<div class="grid sm:grid-cols-2 gap-4"><div><label class="font-bold text-sm mb-2 block">كلمة المرور <span class="text-red-500">*</span></label><input id="regPass" type="password" required minlength="6" placeholder="6 أحرف على الأقل" oninput="updatePassBar()" class="input-f w-full rounded-2xl px-4 py-3.5 font-bold text-sm"></div><div><label class="font-bold text-sm mb-2 block">تأكيد كلمة المرور <span class="text-red-500">*</span></label><input id="regPass2" type="password" required placeholder="أعد كتابة كلمة المرور" class="input-f w-full rounded-2xl px-4 py-3.5 font-bold text-sm"></div></div>
+<div class="bg-gray-50 rounded-2xl p-3 text-xs font-bold text-gray-600">قوة كلمة المرور<div class="h-2 bg-gray-200 rounded-full mt-2 overflow-hidden"><div id="passBar" class="h-full w-0 rounded-full transition-all duration-500" style="background:#EF4444"></div></div></div>
+<label class="flex items-start gap-2 text-sm text-gray-600 font-bold cursor-pointer"><input id="regAgree" type="checkbox" required class="mt-1 w-4 h-4 accent-[#C9A227]"> أوافق على استخدام المنصة للأغراض الأكاديمية وأتعهد بصحة البيانات المدخلة </label>
+<button id="regBtn" class="w-full btn-gold rounded-2xl py-4 font-black text-base"><i class="fa-solid fa-user-plus ml-2"></i> إنشاء الحساب </button>
+</form><p class="text-center text-sm text-gray-600 mt-5">لديك حساب بالفعل؟ <button onclick="go('login')" class="text-navy-700 font-black hover:underline">تسجيل الدخول</button></p></div>
+<div class="order-1 lg:order-2 bg-gradient-to-br from-navy-950 via-navy-900 to-navy-700 text-white p-8 sm:p-12 relative overflow-hidden flex flex-col justify-center"><div class="absolute inset-0 pattern"></div><div class="relative"><h3 class="text-2xl sm:text-3xl font-black mb-5">انضم إلى <span class="gold-text">مجتمع الكلية</span> التقني</h3><div class="space-y-4"><div class="flex gap-3 items-start"><span class="w-10 h-10 shrink-0 rounded-xl bg-gold-500 text-navy-900 flex items-center justify-center font-black"><i class="fa-solid fa-check"></i></span><div><p class="font-black">حساب مجاني بالكامل</p><p class="text-sm text-gray-300">بدون أي رسوم لجميع طلبة الكلية</p></div></div><div class="flex gap-3 items-start"><span class="w-10 h-10 shrink-0 rounded-xl bg-gold-500 text-navy-900 flex items-center justify-center font-black"><i class="fa-solid fa-check"></i></span><div><p class="font-black">تقديم طلبات غير محدودة</p><p class="text-sm text-gray-300">شكاوى واستفسارات وملاحظات</p></div></div><div class="flex gap-3 items-start"><span class="w-10 h-10 shrink-0 rounded-xl bg-gold-500 text-navy-900 flex items-center justify-center font-black"><i class="fa-solid fa-check"></i></span><div><p class="font-black">تواصل مباشر مع الأستاذ</p><p class="text-sm text-gray-300">ردود سريعة ومحادثات خاصة آمنة</p></div></div></div><img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&q=80&auto=format&fit=crop" class="rounded-2xl mt-7 h-44 w-full object-cover border border-white/20" onerror="this.style.display='none'" alt="طلبة"></div></div>
+</div>
+</section>
+
+<!-- NEW TICKET -->
+<section id="view-newTicket" class="view">
+<div class="max-w-3xl mx-auto px-4 py-10"><div class="bg-white rounded-3xl shadow-card border border-gray-100 overflow-hidden">
+<div class="bg-gradient-to-l from-navy-950 via-navy-900 to-navy-700 text-white p-7 relative overflow-hidden"><div class="absolute inset-0 pattern"></div><div class="relative flex items-center gap-4"><div class="w-14 h-14 rounded-2xl bg-gold-500 text-navy-900 flex items-center justify-center text-2xl shadow-gold shrink-0"><i class="fa-solid fa-paper-plane"></i></div><div><h2 class="text-xl sm:text-2xl font-black">تقديم شكوى أو استفسار</h2><p class="text-sm text-gray-300">املأ الاستمارة التالية وسيتم إرسال طلبك مباشرة إلى الأستاذ المسؤول</p></div></div></div>
+<form onsubmit="submitTicket(event)" class="p-6 sm:p-8 space-y-5">
+<div id="ticketAlert" class="hidden rounded-2xl p-4 text-sm font-bold"></div>
+<div><label class="font-black text-sm mb-2 block">اسم الطالب <span class="text-red-500">*</span></label><input id="tName" required placeholder="اكتب اسمك الكامل" class="input-f w-full rounded-2xl px-4 py-3.5 font-bold text-sm"></div>
+<div class="grid sm:grid-cols-2 gap-4"><div><label class="font-black text-sm mb-2 block">القسم العلمي <span class="text-red-500">*</span></label><select id="tDept" required class="input-f w-full rounded-2xl px-4 py-3.5 font-bold text-sm"><option value="">— اختر القسم —</option><option>قسم تقنيات صحة المجتمع</option><option>قسم تقنيات المحاسبة</option><option>قسم تقنيات هندسة الكهروميكانيك</option><option>قسم تقنيات هندسة الوقود والطاقة</option></select></div><div><label class="font-black text-sm mb-2 block">المرحلة الدراسية <span class="text-red-500">*</span></label><select id="tStage" required class="input-f w-full rounded-2xl px-4 py-3.5 font-bold text-sm"><option value="">— اختر المرحلة —</option><option>المرحلة الأولى</option><option>المرحلة الثانية</option></select></div></div>
+<div><label class="font-black text-sm mb-2 block">نوع الدراسة <span class="text-red-500">*</span></label><div class="grid grid-cols-2 gap-3"><label class="cursor-pointer"><input type="radio" name="studyType" value="صباحي" required class="peer hidden"><div class="peer-checked:bg-navy-900 peer-checked:text-white peer-checked:border-navy-900 border-2 border-gray-200 rounded-2xl py-3.5 text-center font-black transition bg-gray-50"><i class="fa-solid fa-sun ml-2 text-gold-500"></i> صباحي </div></label><label class="cursor-pointer"><input type="radio" name="studyType" value="مسائي" class="peer hidden"><div class="peer-checked:bg-navy-900 peer-checked:text-white peer-checked:border-navy-900 border-2 border-gray-200 rounded-2xl py-3.5 text-center font-black transition bg-gray-50"><i class="fa-solid fa-moon ml-2 text-sky2-400"></i> مسائي </div></label></div></div>
+<div><label class="font-black text-sm mb-2 block">قدّم مشكلتك أو اطرح سؤالك <span class="text-red-500">*</span></label><textarea id="tMsg" required minlength="10" rows="6" maxlength="2000" oninput="document.getElementById('msgCount').textContent=this.value.length" placeholder="يرجى كتابة مشكلتك أو استفسارك بالتفصيل، وسيتم الاطلاع عليه من قبل الأستاذ المسؤول" class="input-f w-full rounded-2xl px-4 py-3.5 font-bold text-sm leading-loose resize-none"></textarea><div class="flex justify-between text-xs text-gray-400 font-bold mt-1"><span>الحد الأدنى 10 أحرف</span><span><span id="msgCount">0</span> / 2000</span></div></div>
+<button id="sendTicketBtn" class="w-full btn-gold rounded-2xl py-4 font-black text-lg"><i class="fa-solid fa-paper-plane ml-2"></i> إرسال الطلب </button>
+<p class="text-center text-xs text-gray-400 font-bold"><i class="fa-solid fa-lock ml-1"></i> طلبك سري ولا يراه سواك والأستاذ المسؤول </p>
+</form></div></div>
+</section>
+
+<!-- SUCCESS -->
+<section id="view-success" class="view">
+<div class="max-w-xl mx-auto px-4 py-14"><div class="bg-white rounded-3xl shadow-card border border-gray-100 p-8 sm:p-10 text-center pop">
+<div class="mx-auto mb-6" style="width:96px;height:96px;border-radius:50%;background:linear-gradient(135deg,#10B981,#059669);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 12px rgba(16,185,129,.15),0 0 0 24px rgba(16,185,129,.08)"><i class="fa-solid fa-check text-white text-4xl"></i></div>
+<div class="bg-green-50 border-2 border-green-200 rounded-2xl p-5 mb-5"><h2 class="text-xl sm:text-2xl font-black text-green-700"><i class="fa-solid fa-circle-check ml-2"></i>تم تقديم طلبك بنجاح</h2></div>
+<div class="grid grid-cols-2 gap-3 mb-6"><div class="bg-gray-50 rounded-2xl p-4"><p class="text-xs text-gray-500 font-bold mb-1">رقم الطلب</p><p id="succNum" class="font-black text-navy-900" dir="ltr">—</p></div><div class="bg-gray-50 rounded-2xl p-4"><p class="text-xs text-gray-500 font-bold mb-1">تاريخ الإرسال</p><p id="succDate" class="font-black text-navy-900 text-sm">—</p></div></div>
+<p class="text-sm text-gray-500 mb-7 leading-loose">تم حفظ طلبك في قاعدة البيانات وإرساله إلى الأستاذ المسؤول.<br>ستصلك إشعارات فورية عند الرد على طلبك.</p>
+<div class="flex flex-col sm:flex-row gap-3"><button onclick="openTicket(lastTicketId)" class="flex-1 btn-navy text-white rounded-2xl py-3.5 font-black"><i class="fa-solid fa-comments ml-2"></i> عرض المحادثة </button><button onclick="go('myTickets')" class="flex-1 bg-gray-100 text-navy-900 rounded-2xl py-3.5 font-black hover:bg-gray-200 transition"><i class="fa-solid fa-list ml-2"></i> طلباتي </button></div>
+</div></div>
+</section>
+
+<!-- STUDENT DASH -->
+<section id="view-studentDash" class="view">
+<div class="max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-10"><div class="grid md:grid-cols-[260px_1fr] gap-6">
+<aside class="hidden md:block bg-white rounded-3xl shadow-card border border-gray-100 p-4 h-fit sticky top-24"><div class="text-center pb-4 border-b mb-4"><div id="stdAvatar" class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-navy-800 to-navy-950 text-gold-400 flex items-center justify-center text-2xl font-black mb-2">ط</div><p id="stdName" class="font-black text-navy-900 text-sm">—</p><p id="stdEmail" class="text-xs text-gray-400 truncate" dir="ltr">—</p><span class="inline-block mt-2 bg-green-100 text-green-700 text-[11px] font-black px-3 py-1 rounded-full">حساب طالب نشط</span></div>
+<nav class="space-y-1 text-sm font-bold text-gray-600"><button onclick="go('studentDash')" class="sidebar-link active w-full text-right px-4 py-3 rounded-xl flex items-center gap-3"><i class="fa-solid fa-house w-5 text-center"></i> الرئيسية</button><button onclick="go('newTicket')" class="sidebar-link w-full text-right px-4 py-3 rounded-xl flex items-center gap-3"><i class="fa-solid fa-plus w-5 text-center"></i> طلب جديد</button><button onclick="go('myTickets')" class="sidebar-link w-full text-right px-4 py-3 rounded-xl flex items-center gap-3"><i class="fa-solid fa-list w-5 text-center"></i> طلباتي <span id="stdTickCount" class="mr-auto bg-navy-900 text-white text-[11px] px-2 py-0.5 rounded-full">0</span></button><button onclick="go('notifications')" class="sidebar-link w-full text-right px-4 py-3 rounded-xl flex items-center gap-3"><i class="fa-solid fa-bell w-5 text-center"></i> الإشعارات <span id="stdNotifCount" class="mr-auto bg-red-500 text-white text-[11px] px-2 py-0.5 rounded-full hidden">0</span></button><button onclick="go('profile')" class="sidebar-link w-full text-right px-4 py-3 rounded-xl flex items-center gap-3"><i class="fa-solid fa-user-gear w-5 text-center"></i> الملف الشخصي</button><button onclick="logout()" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 text-red-500 hover:bg-red-50"><i class="fa-solid fa-power-off w-5 text-center"></i> تسجيل الخروج</button></nav></aside>
+<div class="space-y-6 min-w-0">
+<div class="bg-gradient-to-l from-navy-950 via-navy-900 to-navy-700 rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden"><div class="absolute inset-0 pattern"></div><div class="relative flex flex-col sm:flex-row sm:items-center gap-4 justify-between"><div><p class="text-gold-300 font-bold text-sm mb-1">👋 أهلاً بك، <span id="stdHello">طالبنا العزيز</span></p><h2 class="text-xl sm:text-2xl font-black">لوحة الطالب الشخصية</h2><p class="text-sm text-gray-300 mt-1">تابع طلباتك وردود الأستاذ من مكان واحد</p></div><button onclick="go('newTicket')" class="btn-gold rounded-2xl px-6 py-3.5 font-black shrink-0"><i class="fa-solid fa-plus ml-2"></i> تقديم شكوى أو استفسار جديد </button></div></div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="stat-card bg-white rounded-2xl p-5 shadow-card border border-gray-100"><span class="w-10 h-10 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center mb-3"><i class="fa-solid fa-folder-open"></i></span><p id="sStatAll" class="text-2xl font-black text-navy-900 count-up">0</p><p class="text-xs font-bold text-gray-500">إجمالي طلباتي</p></div>
+<div class="stat-card bg-white rounded-2xl p-5 shadow-card border border-gray-100"><span class="w-10 h-10 rounded-xl bg-red-500 text-white flex items-center justify-center mb-3"><i class="fa-solid fa-clock"></i></span><p id="sStatNew" class="text-2xl font-black text-red-500 count-up">0</p><p class="text-xs font-bold text-gray-500">بانتظار الرد</p></div>
+<div class="stat-card bg-white rounded-2xl p-5 shadow-card border border-gray-100"><span class="w-10 h-10 rounded-xl bg-green-500 text-white flex items-center justify-center mb-3"><i class="fa-solid fa-check-double"></i></span><p id="sStatAns" class="text-2xl font-black text-green-600 count-up">0</p><p class="text-xs font-bold text-gray-500">تمت الإجابة</p></div>
+<div class="stat-card bg-white rounded-2xl p-5 shadow-card border border-gray-100"><span class="w-10 h-10 rounded-xl bg-gold-500 text-navy-900 flex items-center justify-center mb-3"><i class="fa-solid fa-bell"></i></span><p id="sStatNotif" class="text-2xl font-black text-gold-600 count-up">0</p><p class="text-xs font-bold text-gray-500">إشعارات غير مقروءة</p></div>
+</div>
+<div class="bg-white rounded-3xl shadow-card border border-gray-100 p-5 sm:p-6"><div class="flex items-center justify-between mb-4"><h3 class="font-black text-navy-900"><i class="fa-solid fa-clock-rotate-left text-gold-500 ml-2"></i> أحدث الطلبات</h3><button onclick="go('myTickets')" class="text-sm font-black text-navy-600 hover:underline">عرض الكل ←</button></div><div id="stdRecent" class="space-y-3"></div></div>
+<div class="bg-white rounded-3xl shadow-card border border-gray-100 p-5 sm:p-6"><h3 class="font-black text-navy-900 mb-4"><i class="fa-solid fa-bell text-gold-500 ml-2"></i> أحدث الإشعارات</h3><div id="stdRecentNotif" class="space-y-2"></div></div>
+</div></div>
+<div class="sidebar-m justify-around py-2 px-1 text-[11px] font-black text-gray-500"><button onclick="go('studentDash')" class="flex flex-col items-center gap-1 p-2 text-navy-900"><i class="fa-solid fa-house text-lg"></i>الرئيسية</button><button onclick="go('newTicket')" class="flex flex-col items-center gap-1 p-2"><span class="w-12 h-12 -mt-8 rounded-2xl btn-gold flex items-center justify-center text-xl shadow-gold"><i class="fa-solid fa-plus"></i></span>جديد </button><button onclick="go('myTickets')" class="flex flex-col items-center gap-1 p-2"><i class="fa-solid fa-list text-lg"></i>طلباتي</button><button onclick="go('notifications')" class="flex flex-col items-center gap-1 p-2 relative"><i class="fa-solid fa-bell text-lg"></i>إشعارات<span id="mStdNotif" class="hidden absolute top-0 left-2 min-w-[16px] h-4 px-1 bg-red-500 text-white rounded-full text-[9px] items-center justify-center">!</span></button><button onclick="go('profile')" class="flex flex-col items-center gap-1 p-2"><i class="fa-solid fa-user text-lg"></i>حسابي</button></div>
+</div>
+</section>
+
+<!-- MY TICKETS -->
+<section id="view-myTickets" class="view">
+<div class="max-w-5xl mx-auto px-4 py-10 pb-28 md:pb-12">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6"><div><h2 class="text-2xl font-black text-navy-900">طلباتي</h2><p class="text-sm text-gray-500">جميع الشكاوى والاستفسارات التي قدمتها مع حالتها</p></div><button onclick="go('newTicket')" class="btn-gold rounded-2xl px-5 py-3 font-black text-sm"><i class="fa-solid fa-plus ml-2"></i> طلب جديد </button></div>
+<div class="bg-white rounded-2xl shadow-card border p-3 mb-5 flex flex-col sm:flex-row gap-2"><div class="relative flex-1"><i class="fa-solid fa-magnifying-glass absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"></i><input id="mySearch" oninput="renderMyTickets()" placeholder="ابحث برقم الطلب أو نص الشكوى..." class="w-full rounded-xl bg-gray-50 border pr-11 pl-4 py-3 text-sm font-bold outline-none focus:border-gold-500"></div><select id="myFilter" onchange="renderMyTickets()" class="rounded-xl bg-gray-50 border px-4 py-3 text-sm font-black"><option value="">كل الحالات</option><option>جديد</option><option>قيد المعالجة</option><option>تمت الإجابة</option><option>مغلق</option></select></div>
+<div id="myTicketsList" class="space-y-3"></div>
+</div>
+</section>
+
+<!-- TICKET -->
+<section id="view-ticket" class="view">
+<div class="max-w-4xl mx-auto px-4 py-10">
+<button onclick="backFromTicket()" class="mb-4 text-sm font-black text-navy-700 hover:underline"><i class="fa-solid fa-arrow-right ml-1"></i> رجوع </button>
+<div id="ticketHead" class="bg-white rounded-3xl shadow-card border p-5 sm:p-6 mb-5"></div>
+<div class="bg-white rounded-3xl shadow-card border overflow-hidden"><div class="bg-navy-900 text-white px-5 py-4 flex items-center justify-between"><h3 class="font-black text-sm sm:text-base"><i class="fa-solid fa-comments text-gold-400 ml-2"></i> المحادثة الخاصة بالطلب</h3><span class="text-[11px] bg-white/10 px-3 py-1 rounded-full font-bold">مرتبة زمنياً <i class="fa-solid fa-arrow-down-wide-short mr-1"></i></span></div><div id="chatBox" class="p-4 sm:p-6 space-y-4 max-h-[520px] overflow-y-auto bg-[#F7F9FD]"></div><div id="replyArea" class="p-4 border-t bg-white"></div></div>
+<div id="adminTicketTools" class="hidden mt-5 bg-white rounded-3xl shadow-card border p-5"><h4 class="font-black text-navy-900 mb-3 text-sm"><i class="fa-solid fa-screwdriver-wrench text-gold-500 ml-2"></i> أدوات إدارة الطلب (الأستاذ)</h4><div class="flex flex-wrap gap-2"><select id="statusChanger" onchange="changeStatus(currentTicketId,this.value)" class="rounded-xl border-2 px-4 py-2.5 text-sm font-black"></select><button onclick="window.print()" class="px-4 py-2.5 rounded-xl bg-gray-100 font-black text-sm hover:bg-gray-200 transition"><i class="fa-solid fa-print ml-1"></i> طباعة</button><button onclick="closeTicket(currentTicketId)" class="px-4 py-2.5 rounded-xl bg-gray-800 text-white font-black text-sm hover:bg-gray-900 transition"><i class="fa-solid fa-lock ml-1"></i> إغلاق الطلب</button><button onclick="reopenTicket(currentTicketId)" class="px-4 py-2.5 rounded-xl bg-green-600 text-white font-black text-sm hover:bg-green-700 transition"><i class="fa-solid fa-rotate-right ml-1"></i> إعادة فتح</button></div></div>
+</div>
+</section>
+
+<!-- ADMIN DASH -->
+<section id="view-adminDash" class="view">
+<div class="max-w-7xl mx-auto px-4 py-8 pb-28 md:pb-10"><div class="grid md:grid-cols-[260px_1fr] gap-6">
+<aside class="hidden md:block bg-navy-950 text-white rounded-3xl shadow-card p-4 h-fit sticky top-24"><div class="text-center pb-4 border-b border-white/10 mb-4"><div class="w-16 h-16 mx-auto rounded-2xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900 flex items-center justify-center text-2xl mb-2"><i class="fa-solid fa-user-tie"></i></div><p class="font-black text-sm">م. مصطفى جاسم محمد</p><p class="text-xs text-gold-300">الأستاذ المسؤول • مدير المنصة</p><span class="inline-flex items-center gap-1 mt-2 bg-green-500/20 text-green-300 text-[11px] font-black px-3 py-1 rounded-full border border-green-500/30"><span class="w-2 h-2 rounded-full bg-green-400 live-dot"></span> متصل الآن </span></div>
+<nav class="space-y-1 text-sm font-bold text-gray-300"><button onclick="go('adminDash')" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 bg-gold-500 text-navy-900"><i class="fa-solid fa-gauge w-5 text-center"></i> الرئيسية</button><button onclick="go('inbox')" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-white/10 transition"><i class="fa-solid fa-inbox w-5 text-center"></i> صندوق الوارد <span id="admInboxBadge" class="mr-auto bg-red-500 text-white text-[11px] px-2 py-0.5 rounded-full hidden">0</span></button><button onclick="go('notifications')" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-white/10 transition"><i class="fa-solid fa-bell w-5 text-center"></i> الإشعارات <span id="admNotifBadge" class="mr-auto bg-red-500 text-white text-[11px] px-2 py-0.5 rounded-full hidden">0</span></button><button onclick="go('users')" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-white/10 transition"><i class="fa-solid fa-users w-5 text-center"></i> إدارة الحسابات</button><button onclick="go('profile')" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 hover:bg-white/10 transition"><i class="fa-solid fa-gear w-5 text-center"></i> الإعدادات</button><button onclick="logout()" class="w-full text-right px-4 py-3 rounded-xl flex items-center gap-3 text-red-400 hover:bg-red-500/20 transition"><i class="fa-solid fa-power-off w-5 text-center"></i> تسجيل الخروج</button></nav><div class="mt-4 bg-white/5 border border-white/10 rounded-2xl p-3 text-xs leading-relaxed text-gray-300"><i class="fa-solid fa-shield-halved text-gold-400 ml-1"></i> جلسة إدارية آمنة ومشفرة. جميع الإجراءات مسجلة.</div></aside>
+<div class="space-y-6 min-w-0">
+<div class="bg-gradient-to-l from-navy-950 via-navy-900 to-navy-700 rounded-3xl p-6 text-white relative overflow-hidden"><div class="absolute inset-0 pattern"></div><div class="relative flex flex-col sm:flex-row justify-between gap-3 items-start sm:items-center"><div><h2 class="text-xl sm:text-2xl font-black">لوحة تحكم <span class="gold-text">الأستاذ المسؤول</span></h2><p class="text-sm text-gray-300 mt-1">إدارة شاملة للطلبات والمراسلات والحسابات • تحديث فوري <span class="inline-block w-2 h-2 bg-green-400 rounded-full live-dot mr-1"></span></p></div><div class="flex gap-2"><button onclick="exportCSV()" class="glass rounded-xl px-4 py-2.5 text-sm font-black hover:bg-white/20 transition"><i class="fa-solid fa-file-export ml-1"></i> تصدير</button><button onclick="refreshAdmin(true)" class="btn-gold rounded-xl px-4 py-2.5 text-sm font-black"><i class="fa-solid fa-rotate ml-1"></i> تحديث</button></div></div></div>
+<div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="stat-card rounded-2xl p-5 text-white bg-gradient-to-br from-navy-700 to-navy-950 shadow-card"><p class="text-3xl font-black count-up" id="aStatAll">0</p><p class="text-xs font-bold opacity-80 mt-1">الطلبات الكلي</p><i class="fa-solid fa-folder-open absolute top-3 left-3 opacity-20 text-2xl"></i></div>
+<div class="stat-card rounded-2xl p-5 text-white bg-gradient-to-br from-red-500 to-red-700 shadow-card"><p class="text-3xl font-black count-up" id="aStatNew">0</p><p class="text-xs font-bold opacity-90 mt-1">طلبات جديدة</p><i class="fa-solid fa-envelope absolute top-3 left-3 opacity-20 text-2xl"></i></div>
+<div class="stat-card rounded-2xl p-5 text-white bg-gradient-to-br from-amber-500 to-orange-600 shadow-card"><p class="text-3xl font-black count-up" id="aStatProg">0</p><p class="text-xs font-bold opacity-90 mt-1">قيد المعالجة</p><i class="fa-solid fa-hourglass-half absolute top-3 left-3 opacity-20 text-2xl"></i></div>
+<div class="stat-card rounded-2xl p-5 text-white bg-gradient-to-br from-green-500 to-emerald-700 shadow-card"><p class="text-3xl font-black count-up" id="aStatAns">0</p><p class="text-xs font-bold opacity-90 mt-1">تمت الإجابة عنها</p><i class="fa-solid fa-check-double absolute top-3 left-3 opacity-20 text-2xl"></i></div>
+</div>
+<div class="grid lg:grid-cols-2 gap-5"><div class="bg-white rounded-3xl shadow-card border p-5"><h3 class="font-black text-navy-900 text-sm mb-3">توزيع الطلبات حسب الحالة</h3><div class="h-64"><canvas id="chStatus"></canvas></div></div><div class="bg-white rounded-3xl shadow-card border p-5"><h3 class="font-black text-navy-900 text-sm mb-3">الطلبات حسب القسم العلمي</h3><div class="h-64"><canvas id="chDept"></canvas></div></div></div>
+<div class="bg-white rounded-3xl shadow-card border p-5"><div class="flex items-center justify-between mb-4"><h3 class="font-black text-navy-900"><i class="fa-solid fa-inbox text-gold-500 ml-2"></i> أحدث الطلبات الواردة</h3><button onclick="go('inbox')" class="text-sm font-black text-navy-600 hover:underline">صندوق الوارد ←</button></div><div id="admRecent" class="space-y-2"></div></div>
+</div></div>
+<div class="sidebar-m justify-around py-2 px-1 text-[11px] font-black text-gray-500"><button onclick="go('adminDash')" class="flex flex-col items-center gap-1 p-2 text-navy-900"><i class="fa-solid fa-gauge text-lg"></i>الرئيسية</button><button onclick="go('inbox')" class="flex flex-col items-center gap-1 p-2 relative"><i class="fa-solid fa-inbox text-lg"></i>الوارد<span id="mAdmInbox" class="hidden absolute top-0 left-2 min-w-[16px] h-4 px-1 bg-red-500 text-white rounded-full text-[9px] items-center justify-center">0</span></button><button onclick="go('notifications')" class="flex flex-col items-center gap-1 p-2 relative"><i class="fa-solid fa-bell text-lg"></i>إشعارات<span id="mAdmNotif" class="hidden absolute top-0 left-2 min-w-[16px] h-4 px-1 bg-red-500 text-white rounded-full text-[9px] items-center justify-center">!</span></button><button onclick="go('users')" class="flex flex-col items-center gap-1 p-2"><i class="fa-solid fa-users text-lg"></i>الحسابات</button><button onclick="go('profile')" class="flex flex-col items-center gap-1 p-2"><i class="fa-solid fa-gear text-lg"></i>الإعدادات</button></div>
+</div>
+</section>
+
+<!-- INBOX -->
+<section id="view-inbox" class="view">
+<div class="max-w-6xl mx-auto px-4 py-10 pb-28 md:pb-12">
+<div class="flex flex-col sm:flex-row justify-between gap-3 mb-6"><div><h2 class="text-2xl font-black text-navy-900 flex items-center gap-2">صندوق الوارد <span id="inboxTotal" class="bg-navy-900 text-gold-400 text-sm px-3 py-1 rounded-full">0</span></h2><p class="text-sm text-gray-500">جميع الشكاوى والاستفسارات الواردة من الطلاب مرتبة من الأحدث</p></div><button onclick="exportCSV()" class="bg-white border rounded-2xl px-4 py-2.5 font-black text-sm shadow-sm hover:bg-gray-50 transition"><i class="fa-solid fa-file-csv ml-1 text-green-600"></i> تصدير CSV </button></div>
+<div class="bg-white rounded-3xl shadow-card border p-4 mb-5"><div class="grid sm:grid-cols-2 lg:grid-cols-6 gap-2"><div class="relative lg:col-span-2"><i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i><input id="fSearch" oninput="renderInbox()" placeholder="بحث: اسم، رقم، نص..." class="w-full rounded-xl bg-gray-50 border pr-9 pl-3 py-2.5 text-sm font-bold outline-none focus:border-gold-500"></div><select id="fDept" onchange="renderInbox()" class="rounded-xl bg-gray-50 border px-3 py-2.5 text-sm font-bold"><option value="">كل الأقسام</option><option>قسم تقنيات صحة المجتمع</option><option>قسم تقنيات المحاسبة</option><option>قسم تقنيات هندسة الكهروميكانيك</option><option>قسم تقنيات هندسة الوقود والطاقة</option></select><select id="fStage" onchange="renderInbox()" class="rounded-xl bg-gray-50 border px-3 py-2.5 text-sm font-bold"><option value="">كل المراحل</option><option>المرحلة الأولى</option><option>المرحلة الثانية</option></select><select id="fStudy" onchange="renderInbox()" class="rounded-xl bg-gray-50 border px-3 py-2.5 text-sm font-bold"><option value="">صباحي/مسائي</option><option>صباحي</option><option>مسائي</option></select><select id="fStatus" onchange="renderInbox()" class="rounded-xl bg-gray-50 border px-3 py-2.5 text-sm font-bold"><option value="">كل الحالات</option><option>جديد</option><option>قيد المعالجة</option><option>تمت الإجابة</option><option>مغلق</option></select></div><div class="flex flex-wrap items-center gap-2 mt-3"><input id="fDate" type="date" onchange="renderInbox()" class="rounded-xl bg-gray-50 border px-3 py-2 text-xs font-bold"><button onclick="clearFilters()" class="text-xs font-black text-red-500 hover:underline px-2">مسح التصفية <i class="fa-solid fa-xmark"></i></button><span class="mr-auto text-xs font-bold text-gray-400 flex items-center gap-1"><span class="w-2 h-2 bg-green-400 rounded-full live-dot"></span> تحديث تلقائي كل 5 ثوانٍ </span></div></div>
+<div id="inboxList" class="space-y-3"></div>
+</div>
+</section>
+
+<!-- NOTIFICATIONS -->
+<section id="view-notifications" class="view">
+<div class="max-w-3xl mx-auto px-4 py-10 pb-28 md:pb-12"><div class="flex items-center justify-between mb-6 gap-3"><div><h2 class="text-2xl font-black text-navy-900">الإشعارات</h2><p class="text-sm text-gray-500">آخر التنبيهات الواردة إلى حسابك</p></div><button onclick="markAllRead()" class="text-sm font-black bg-navy-900 text-white px-4 py-2.5 rounded-xl hover:bg-navy-700 transition"><i class="fa-solid fa-check-double ml-1"></i> تعيين الكل كمقروء </button></div><div id="notifList" class="space-y-3"></div></div>
+</section>
+
+<!-- USERS -->
+<section id="view-users" class="view">
+<div class="max-w-6xl mx-auto px-4 py-10 pb-28 md:pb-12"><div class="flex flex-col sm:flex-row justify-between gap-3 mb-6"><div><h2 class="text-2xl font-black text-navy-900">إدارة حسابات الطلاب</h2><p class="text-sm text-gray-500">عرض الحسابات المسجلة وإمكانية تعطيلها أو تفعيلها</p></div><div class="relative"><i class="fa-solid fa-magnifying-glass absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 text-sm"></i><input id="uSearch" oninput="renderUsers()" placeholder="بحث عن طالب..." class="rounded-xl bg-white border shadow-sm pr-9 pl-4 py-2.5 text-sm font-bold outline-none focus:border-gold-500 w-full sm:w-64"></div></div>
+<div class="bg-white rounded-3xl shadow-card border overflow-hidden"><div class="overflow-x-auto"><table class="w-full text-sm styled min-w-[720px]"><thead><tr><th class="p-4 text-right">الطالب</th><th class="p-4 text-right">البريد</th><th class="p-4 text-center">الطلبات</th><th class="p-4 text-center">التسجيل</th><th class="p-4 text-center">الحالة</th><th class="p-4 text-center">إجراءات</th></tr></thead><tbody id="usersBody"></tbody></table></div></div></div>
+</section>
+
+<!-- PROFILE -->
+<section id="view-profile" class="view">
+<div class="max-w-3xl mx-auto px-4 py-10 pb-28 md:pb-12"><h2 class="text-2xl font-black text-navy-900 mb-1">الملف الشخصي والإعدادات</h2><p class="text-sm text-gray-500 mb-6">تحديث بياناتك الشخصية وتغيير كلمة المرور</p>
+<div class="bg-white rounded-3xl shadow-card border p-6 sm:p-8 space-y-6">
+<div class="flex items-center gap-4 pb-5 border-b"><div id="profAvatar" class="w-20 h-20 rounded-3xl bg-gradient-to-br from-navy-800 to-navy-950 text-gold-400 flex items-center justify-center text-3xl font-black shrink-0">ط</div><div><p id="profName" class="font-black text-lg text-navy-900">—</p><p id="profEmail" class="text-sm text-gray-400" dir="ltr">—</p><span id="profRole" class="inline-block mt-1 text-[11px] font-black px-3 py-1 rounded-full bg-navy-900 text-gold-400">طالب</span></div></div>
+<div id="profAlert" class="hidden rounded-2xl p-4 text-sm font-bold"></div>
+<div class="grid sm:grid-cols-2 gap-4"><div><label class="font-black text-sm mb-2 block">الاسم الكامل</label><input id="pName" class="input-f w-full rounded-2xl px-4 py-3 font-bold text-sm"></div><div><label class="font-black text-sm mb-2 block">رقم الهاتف (اختياري)</label><input id="pPhone" dir="ltr" style="text-align:right" placeholder="07xxxxxxxxx" class="input-f w-full rounded-2xl px-4 py-3 font-bold text-sm"></div></div>
+<button onclick="saveProfile()" class="btn-navy text-white rounded-2xl px-6 py-3 font-black text-sm"><i class="fa-solid fa-floppy-disk ml-2"></i> حفظ التعديلات </button>
+<div class="border-t pt-6"><h3 class="font-black text-navy-900 mb-3"><i class="fa-solid fa-key text-gold-500 ml-2"></i> تغيير كلمة المرور</h3><div class="grid sm:grid-cols-3 gap-3"><input id="pwOld" type="password" placeholder="الحالية" class="input-f rounded-2xl px-4 py-3 font-bold text-sm"><input id="pwNew" type="password" placeholder="الجديدة (6+ أحرف)" class="input-f rounded-2xl px-4 py-3 font-bold text-sm"><input id="pwNew2" type="password" placeholder="تأكيد الجديدة" class="input-f rounded-2xl px-4 py-3 font-bold text-sm"></div><button onclick="changePassword()" class="mt-3 btn-gold rounded-2xl px-6 py-3 font-black text-sm"><i class="fa-solid fa-rotate ml-2"></i> تحديث كلمة المرور </button></div>
+<div class="border-t pt-6 flex flex-col sm:flex-row gap-3"><button onclick="logout()" class="flex-1 bg-red-50 text-red-600 border border-red-200 rounded-2xl py-3 font-black text-sm hover:bg-red-600 hover:text-white transition"><i class="fa-solid fa-power-off ml-2"></i> تسجيل الخروج الآمن </button><button onclick="go(dashTarget())" class="flex-1 bg-gray-100 rounded-2xl py-3 font-black text-sm hover:bg-gray-200 transition"><i class="fa-solid fa-house ml-2"></i> العودة للوحة التحكم </button></div>
+</div></div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer class="bg-navy-950 text-white mt-8 relative overflow-hidden"><div class="absolute inset-0 pattern opacity-30"></div>
+<div class="max-w-7xl mx-auto px-4 py-12 grid md:grid-cols-3 gap-9 relative">
+<div><div class="flex items-center gap-3 mb-4"><div class="w-12 h-12 rounded-xl bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900 flex items-center justify-center text-xl"><i class="fa-solid fa-graduation-cap"></i></div><div><p class="font-black">الدعم التقني – الكلية التقنية الكوت</p><p class="text-xs text-gray-400">منصة التواصل والدعم الفني للطلبة</p></div></div><p class="text-sm text-gray-400 leading-loose">منصة جامعية متكاملة لاستقبال استفسارات الطلبة وملاحظاتهم وشكاواهم والرد عليها بسرية تامة وإشعارات فورية.</p><div class="flex gap-2 mt-5"><a href="https://wa.me/9647815561725" target="_blank" rel="noopener" class="w-10 h-10 rounded-xl bg-green-600 flex items-center justify-center hover:scale-110 transition"><i class="fa-brands fa-whatsapp text-lg"></i></a><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-solid fa-envelope"></i></span><span class="w-10 h-10 rounded-xl bg-white/10 flex items-center justify-center"><i class="fa-solid fa-phone"></i></span></div></div>
+<div><h4 class="font-black text-gold-400 mb-4">روابط سريعة</h4><div class="grid grid-cols-2 gap-2 text-sm font-bold text-gray-300"><button onclick="go('home')" class="text-right hover:text-gold-400 transition">• الرئيسية</button><button onclick="go('login')" class="text-right hover:text-gold-400 transition">• تسجيل الدخول</button><button onclick="go('register')" class="text-right hover:text-gold-400 transition">• إنشاء حساب</button><button onclick="go('myTickets')" class="text-right hover:text-gold-400 transition">• متابعة طلباتي</button><button onclick="go('newTicket')" class="text-right hover:text-gold-400 transition">• تقديم طلب</button><button onclick="go('notifications')" class="text-right hover:text-gold-400 transition">• الإشعارات</button></div><h4 class="font-black text-gold-400 mt-6 mb-2">الأقسام العلمية</h4><p class="text-xs text-gray-400 leading-loose">صحة المجتمع • المحاسبة • هندسة الكهروميكانيك • هندسة الوقود والطاقة</p></div>
+<div class="bg-white/5 border border-white/10 rounded-2xl p-5"><h4 class="font-black text-gold-400 mb-3"><i class="fa-solid fa-code ml-2"></i> معلومات المطور</h4><p class="font-black mb-1">مطور الموقع: م. مصطفى جاسم محمد</p><p class="text-sm text-gray-300 mb-4">للتواصل: <span dir="ltr" class="font-black text-white">07815561725</span></p><a href="https://wa.me/9647815561725?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B" target="_blank" rel="noopener" class="flex items-center justify-center gap-2 bg-green-600 hover:bg-green-500 transition rounded-xl py-3 font-black text-sm"><i class="fa-brands fa-whatsapp text-lg"></i> تواصل عبر واتساب </a></div>
+</div><div class="border-t border-white/10 py-5 text-center text-xs sm:text-sm text-gray-400 relative px-4">جميع الحقوق محفوظة © الدعم التقني – الكلية التقنية الكوت <span class="text-gold-500">•</span> <span id="yearNow"></span></div>
+</footer>
+
+<div class="fixed bottom-5 left-4 z-50 flex items-center gap-2"><span class="hidden sm:block bg-white shadow-card border rounded-full px-4 py-2 text-xs font-black text-navy-900">تواصل معنا عبر واتساب</span><a href="https://wa.me/9647815561725?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D9%84%D8%AF%D9%8A%20%D8%A7%D8%B3%D8%AA%D9%81%D8%B3%D8%A7%D8%B1%20%D8%B9%D8%A8%D8%B1%20%D9%85%D9%86%D8%B5%D8%A9%20%D8%A7%D9%84%D8%AF%D8%B9%D9%85%20%D8%A7%D9%84%D8%AA%D9%82%D9%86%D9%8A" target="_blank" rel="noopener" class="float-wa w-14 h-14 rounded-full bg-[#25D366] shadow-2xl flex items-center justify-center text-white text-2xl hover:scale-110 transition border-4 border-white"><i class="fa-brands fa-whatsapp"></i></a></div>
+<div id="toasts" class="fixed top-20 left-4 z-[100] space-y-2 max-w-[92vw] sm:max-w-sm"></div>
+
+<div id="forgotModal" class="hidden fixed inset-0 z-[90] modal-backdrop flex items-center justify-center p-4"><div class="bg-white rounded-3xl p-7 max-w-md w-full pop"><h3 class="font-black text-navy-900 text-lg mb-2"><i class="fa-solid fa-key text-gold-500 ml-2"></i> استعادة الحساب</h3><p class="text-sm text-gray-500 mb-4">أدخل بريدك الإلكتروني وكلمة المرور الجديدة لإعادة تعيينها</p><div class="space-y-3"><input id="fgEmail" type="email" placeholder="البريد الإلكتروني" class="input-f w-full rounded-2xl px-4 py-3 font-bold text-sm"><input id="fgPass" type="password" placeholder="كلمة المرور الجديدة" class="input-f w-full rounded-2xl px-4 py-3 font-bold text-sm"><div class="flex gap-2"><button onclick="doForgot()" class="flex-1 btn-navy text-white rounded-2xl py-3 font-black text-sm">إعادة التعيين</button><button onclick="closeForgot()" class="flex-1 bg-gray-100 rounded-2xl py-3 font-black text-sm hover:bg-gray-200 transition">إلغاء</button></div></div></div></div>
+
+<div id="confirmModal" class="hidden fixed inset-0 z-[95] modal-backdrop flex items-center justify-center p-4"><div class="bg-white rounded-3xl p-7 max-w-sm w-full pop text-center"><div class="w-14 h-14 mx-auto rounded-2xl bg-red-100 text-red-600 flex items-center justify-center text-xl mb-3"><i class="fa-solid fa-triangle-exclamation"></i></div><h3 id="cfTitle" class="font-black text-navy-900 mb-2">تأكيد الإجراء</h3><p id="cfMsg" class="text-sm text-gray-500 mb-5">هل أنت متأكد؟</p><div class="flex gap-2"><button id="cfYes" class="flex-1 bg-red-600 text-white rounded-2xl py-3 font-black text-sm hover:bg-red-700 transition">تأكيد</button><button onclick="closeConfirm()" class="flex-1 bg-gray-100 rounded-2xl py-3 font-black text-sm hover:bg-gray-200 transition">تراجع</button></div></div></div>
+
+<script>
+const DB_KEY='KUT_TECH_DB_V2', SES_KEY='KUT_TECH_SESSION', ATT_KEY='KUT_LOGIN_ATTEMPTS';
+const ADMIN_EMAIL='mustafa@kut.com', ADMIN_PASS='19971997';
+const STATUSES=['جديد','قيد المعالجة','تمت الإجابة','مغلق'];
+let currentTicketId=null,lastTicketId=null,returnView='home',ch1=null,ch2=null,confirmCb=null;
+
+const store={mem:{},get(k){try{return window.localStorage.getItem(k)}catch(e){return(k in this.mem)?this.mem[k]:null}},set(k,v){try{window.localStorage.setItem(k,v)}catch(e){this.mem[k]=v}},del(k){try{window.localStorage.removeItem(k)}catch(e){delete this.mem[k]}}};
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const uid=p=>p+'_'+Date.now().toString(36)+'_'+Math.random().toString(36).slice(2,8);
+const nowISO=()=>new Date().toISOString();
+function fmtDate(iso){try{const d=new Date(iso);return d.toLocaleDateString('ar-IQ',{year:'numeric',month:'long',day:'numeric'})+' • '+d.toLocaleTimeString('ar-IQ',{hour:'2-digit',minute:'2-digit'})}catch(e){return iso}}
+function timeAgo(iso){const s=(Date.now()-new Date(iso).getTime())/1000;if(s<60)return'قبل لحظات';if(s<3600)return'قبل '+Math.floor(s/60)+' دقيقة';if(s<86400)return'قبل '+Math.floor(s/3600)+' ساعة';return'قبل '+Math.floor(s/86400)+' يوم'}
+function simpleHash(str){let h1=0x811c9dc5,h2=0x9e3779b9;for(let i=0;i<str.length;i++){const c=str.charCodeAt(i);h1=Math.imul(h1^c,16777619)|0;h2=(Math.imul(h2+c,2246822519)|0)^(Math.imul(i+1,2654435761)|0);h2=h2|0}return(h1.toString(16).padStart(8,'0')+h2.toString(16).padStart(8,'0')).repeat(2)}
+async function sha256(text){try{if(window.crypto&&crypto.subtle&&crypto.subtle.digest){const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('KUT::'+text));return[...new Uint8Array(buf)].map(x=>x.toString(16).padStart(2,'0')).join('')}}catch(e){}return simpleHash('KUT::'+text)}
+
+function toast(type,title,msg){const map={success:['bg-green-600','fa-circle-check'],error:['bg-red-600','fa-circle-xmark'],info:['bg-navy-900','fa-circle-info'],warn:['bg-amber-500','fa-triangle-exclamation']};const c=map[type]||map.info;const d=document.createElement('div');d.className='toast bg-white rounded-2xl shadow-2xl border border-gray-100 p-4 flex gap-3 items-start';d.innerHTML=`<span class="w-10 h-10 shrink-0 ${c[0]} text-white rounded-xl flex items-center justify-center"><i class="fa-solid ${c[1]}"></i></span><div class="min-w-0"><p class="font-black text-sm text-navy-900">${esc(title)}</p><p class="text-xs text-gray-500 leading-relaxed mt-0.5">${esc(msg||'')}</p></div>`;$('toasts').appendChild(d);setTimeout(()=>{d.style.transition='.4s';d.style.opacity='0';d.style.transform='translateX(-20px)';setTimeout(()=>d.remove(),400)},3800)}
+function showAlert(id,type,msg){const el=$(id);if(!el)return;el.classList.remove('hidden');el.className='mb-4 rounded-2xl p-4 text-sm font-bold '+(type==='error'?'bg-red-50 text-red-700 border border-red-200':type==='success'?'bg-green-50 text-green-700 border border-green-200':'bg-amber-50 text-amber-700 border border-amber-200');el.innerHTML=esc(msg)}
+function hideAlert(id){const el=$(id);if(el)el.classList.add('hidden')}
+function askConfirm(title,msg,cb){$('cfTitle').textContent=title;$('cfMsg').textContent=msg;confirmCb=cb;$('confirmModal').classList.remove('hidden');$('cfYes').onclick=()=>{closeConfirm();if(confirmCb)confirmCb()}}
+function closeConfirm(){$('confirmModal').classList.add('hidden')}
+
+function loadDB(){try{const raw=store.get(DB_KEY);if(raw)return JSON.parse(raw)}catch(e){}return{users:[],tickets:[],messages:[],notifications:[],seq:1}}
+function saveDB(db){store.set(DB_KEY,JSON.stringify(db))}
+function getSession(){try{const r=store.get(SES_KEY);return r?JSON.parse(r):null}catch(e){return null}}
+function setSession(s){if(s)store.set(SES_KEY,JSON.stringify(s));else store.del(SES_KEY)}
+function currentUser(){const s=getSession();if(!s)return null;const db=loadDB();return db.users.find(u=>u.id===s.id)||null}
+function isAdmin(u){return u&&u.role==='admin'}
+function dashTarget(){const u=currentUser();return isAdmin(u)?'adminDash':'studentDash'}
+function statusBadge(st){const m={'جديد':'badge-new','قيد المعالجة':'badge-progress','تمت الإجابة':'badge-answered','مغلق':'badge-closed'};return `<span class="${m[st]||'badge-new'} text-[11px] font-black px-3 py-1 rounded-full whitespace-nowrap">${esc(st)}</span>`}
+function avatarLetter(name){return(name||'ط').trim().charAt(0)||'ط'}
+
+async function ensureSeed(){let db=loadDB();let changed=false;
+let admin=db.users.find(u=>u.email===ADMIN_EMAIL);
+if(!admin){const h=await sha256(ADMIN_PASS);db.users.push({id:uid('u'),name:'م. مصطفى جاسم محمد',email:ADMIN_EMAIL,passHash:h,role:'admin',phone:'07815561725',active:true,createdAt:nowISO()});changed=true}
+if(db.users.filter(u=>u.role==='student').length===0){
+const h2=await sha256('123456');
+const s1={id:uid('u'),name:'علي حسين محمد',email:'ali@student.com',passHash:h2,role:'student',phone:'07700000001',active:true,createdAt:nowISO()};
+const s2={id:uid('u'),name:'زهراء كريم عباس',email:'zahraa@student.com',passHash:h2,role:'student',phone:'07700000002',active:true,createdAt:nowISO()};
+db.users.push(s1,s2);
+const samples=[
+{stu:s1,dept:'قسم تقنيات المحاسبة',stage:'المرحلة الثانية',study:'صباحي',msg:'السلام عليكم، لدي استفسار حول الجدول الدراسي للكورس الثاني، هل تم نشره؟ وكيف يمكنني الحصول على نسخة معتمدة؟',status:'جديد',days:0},
+{stu:s2,dept:'قسم تقنيات صحة المجتمع',stage:'المرحلة الأولى',study:'مسائي',msg:'مرحباً أستاذ، أواجه مشكلة في الدخول إلى المنصة التعليمية، تظهر رسالة خطأ عند تسجيل الدخول رغم صحة البيانات.',status:'قيد المعالجة',days:1},
+{stu:s1,dept:'قسم تقنيات هندسة الكهروميكانيك',stage:'المرحلة الثانية',study:'صباحي',msg:'أحتاج إلى كتاب تأييد استمرارية بالدوام لغرض التقديم على التدريب الصيفي، ما هي الإجراءات المطلوبة؟',status:'تمت الإجابة',days:2}
+];
+samples.forEach((s,i)=>{const num='KUT-2026-'+String(db.seq).padStart(4,'0');db.seq++;const tId=uid('t');const created=new Date(Date.now()-s.days*86400000-3600000).toISOString();
+db.tickets.push({id:tId,number:num,studentId:s.stu.id,studentName:s.stu.name,dept:s.dept,stage:s.stage,studyType:s.study,message:s.msg,status:s.status,createdAt:created,updatedAt:created,unreadAdmin:s.status==='جديد',unreadStudent:false});
+db.messages.push({id:uid('m'),ticketId:tId,senderId:s.stu.id,senderRole:'student',text:s.msg,createdAt:created});
+if(s.status!=='جديد'){const adm=db.users.find(u=>u.role==='admin');db.messages.push({id:uid('m'),ticketId:tId,senderId:adm.id,senderRole:'admin',text:s.status==='تمت الإجابة'?'أهلاً بك، تمت مراجعة طلبك وإكمال الإجراء المطلوب، يمكنك مراجعة شعبة شؤون الطلبة لاستلام الكتاب. ✅':'أهلاً بك، تم استلام طلبك وهو الآن قيد المعالجة، سيتم الرد عليك قريباً.',createdAt:new Date(Date.now()-s.days*86400000).toISOString()})}
+});
+changed=true;
+}
+if(changed)saveDB(db);
+}
+
+function go(view){
+const needAuth=['newTicket','studentDash','myTickets','ticket','adminDash','inbox','notifications','users','profile'];
+const adminOnly=['adminDash','inbox','users'];
+const u=currentUser();
+if(needAuth.includes(view)&&!u){toast('warn','تسجيل الدخول مطلوب','يرجى تسجيل الدخول أولاً للوصول إلى هذه الصفحة');view='login'}
+if(adminOnly.includes(view)&&u&&!isAdmin(u)){toast('error','صلاحيات غير كافية','هذه الصفحة مخصصة للأستاذ المسؤول فقط');view='studentDash'}
+if(view==='myTickets'&&u&&isAdmin(u)){view='inbox'}
+if(view==='newTicket'&&u&&isAdmin(u)){toast('info','حساب إداري','حساب الأستاذ مخصص للردود والإدارة وليس لتقديم الطلبات');return}
+document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+const el=$('view-'+view);if(el)el.classList.add('active');
+$('mobileMenu').classList.add('hidden');
+window.scrollTo({top:0,behavior:'smooth'});
+if(view==='home')renderHomeStats();
+if(view==='studentDash')renderStudentDash();
+if(view==='myTickets')renderMyTickets();
+if(view==='adminDash')renderAdminDash();
+if(view==='inbox')renderInbox();
+if(view==='notifications')renderNotifications();
+if(view==='users')renderUsers();
+if(view==='profile')renderProfile();
+if(view==='newTicket'){const cu=currentUser();if(cu&&$('tName')&&!$('tName').value)$('tName').value=cu.name}
+updateHeader();
+}
+function scrollToId(id){go('home');setTimeout(()=>{const e=$(id);if(e)e.scrollIntoView({behavior:'smooth'})},120);$('mobileMenu').classList.add('hidden')}
+function handleNewTicket(){const u=currentUser();if(!u){toast('info','أنشئ حسابك أولاً','سجّل الدخول أو أنشئ حساب طالب لتقديم طلبك');go('login');return}if(isAdmin(u)){toast('info','حساب إداري','لا يمكن للحساب الإداري تقديم طلبات');return}go('newTicket')}
+function toggleMobile(){$('mobileMenu').classList.toggle('hidden')}
+function togglePass(id,btn){const i=$(id);if(i.type==='password'){i.type='text';btn.innerHTML='<i class="fa-solid fa-eye-slash"></i>'}else{i.type='password';btn.innerHTML='<i class="fa-solid fa-eye"></i>'}}
+function toggleFaq(btn){const body=btn.nextElementSibling;const icon=btn.querySelector('i');document.querySelectorAll('#faqList .faqBody').forEach(b=>{if(b!==body)b.classList.remove('open')});document.querySelectorAll('#faqList button i').forEach(ic=>ic.style.transform='');body.classList.toggle('open');if(body.classList.contains('open'))icon.style.transform='rotate(180deg)'}
+function updatePassBar(){const v=$('regPass').value;let s=0;if(v.length>=6)s++;if(v.length>=10)s++;if(/[A-Z]/.test(v)&&/[a-z]/.test(v))s++;if(/\d/.test(v))s++;if(/[^A-Za-z0-9]/.test(v))s++;s=Math.min(s,4);const bar=$('passBar');const w=['0%','25%','50%','75%','100%'];const c=['#EF4444','#EF4444','#F59E0B','#10B981','#059669'];bar.style.width=w[s];bar.style.background=c[s]}
+
+function updateHeader(){const u=currentUser();
+if(!u){$('guestBtns').classList.remove('hidden');$('guestBtns').classList.add('flex');$('userMenu').classList.add('hidden');$('userMenu').classList.remove('flex');return}
+$('guestBtns').classList.add('hidden');$('guestBtns').classList.remove('flex');$('userMenu').classList.remove('hidden');$('userMenu').classList.add('flex');
+$('hdrName').textContent=u.name.split(' ').slice(0,2).join(' ');$('hdrAvatar').textContent=avatarLetter(u.name);
+const db=loadDB();const unread=db.notifications.filter(n=>n.userId===u.id&&!n.read).length;
+const badge=$('bellBadge');if(unread>0){badge.classList.remove('hidden');badge.classList.add('flex');badge.textContent=unread>99?'99+':unread}else{badge.classList.add('hidden');badge.classList.remove('flex')}
+if(isAdmin(u)){const newCount=db.tickets.filter(t=>t.status==='جديد'||t.unreadAdmin).length;
+[['admInboxBadge',newCount],['admNotifBadge',unread]].forEach(([id,v])=>{const e=$(id);if(!e)return;if(v>0){e.classList.remove('hidden');e.textContent=v}else e.classList.add('hidden')});
+const m1=$('mAdmInbox'),m2=$('mAdmNotif');if(m1){if(newCount>0){m1.classList.remove('hidden');m1.classList.add('flex');m1.textContent=newCount}else{m1.classList.add('hidden');m1.classList.remove('flex')}}if(m2){if(unread>0){m2.classList.remove('hidden');m2.classList.add('flex');m2.textContent='!'}else{m2.classList.add('hidden');m2.classList.remove('flex')}}
+}else{const sc=$('stdNotifCount');if(sc){if(unread>0){sc.classList.remove('hidden');sc.textContent=unread}else sc.classList.add('hidden')}const m=$('mStdNotif');if(m){if(unread>0){m.classList.remove('hidden');m.classList.add('flex')}else{m.classList.add('hidden');m.classList.remove('flex')}}}
+}
+
+async function doRegister(e){e.preventDefault();hideAlert('regAlert');
+const name=$('regName').value.trim(),email=$('regEmail').value.trim().toLowerCase(),p1=$('regPass').value,p2=$('regPass2').value;
+if(name.length<3)return showAlert('regAlert','error','يرجى إدخال الاسم الكامل (3 أحرف على الأقل)');
+if(p1.length<6)return showAlert('regAlert','error','كلمة المرور يجب أن تكون 6 أحرف على الأقل');
+if(p1!==p2)return showAlert('regAlert','error','كلمتا المرور غير متطابقتين');
+if(email===ADMIN_EMAIL)return showAlert('regAlert','error','هذا البريد محجوز للإدارة');
+const btn=$('regBtn');btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin ml-2"></i> جارٍ إنشاء الحساب...';
+const db=loadDB();
+if(db.users.some(u=>u.email===email)){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-user-plus ml-2"></i> إنشاء الحساب ';return showAlert('regAlert','error','هذا البريد مسجل مسبقاً، جرّب تسجيل الدخول')}
+const hash=await sha256(p1);
+const user={id:uid('u'),name,email,passHash:hash,role:'student',phone:'',active:true,createdAt:nowISO()};
+db.users.push(user);
+db.notifications.push({id:uid('n'),userId:user.id,title:'مرحباً بك في المنصة 🎓',body:'تم إنشاء حسابك بنجاح، يمكنك الآن تقديم الشكاوى والاستفسارات ومتابعة الردود.',type:'welcome',ticketId:null,read:false,createdAt:nowISO()});
+saveDB(db);setSession({id:user.id});
+btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-user-plus ml-2"></i> إنشاء الحساب ';
+toast('success','تم إنشاء حسابك بنجاح','أهلاً بك '+name+' في منصة الدعم التقني');go('studentDash');
+}
+
+function getAttempts(){try{return JSON.parse(store.get(ATT_KEY)||'{}')}catch(e){return{}}}
+function setAttempts(o){store.set(ATT_KEY,JSON.stringify(o))}
+async function doLogin(e){e.preventDefault();hideAlert('loginAlert');
+const email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;
+const at=getAttempts();const rec=at[email]||{count:0,until:0};
+if(rec.until&&Date.now()<rec.until){const m=Math.ceil((rec.until-Date.now())/60000);return showAlert('loginAlert','error','تم إيقاف الدخول مؤقتاً بسبب محاولات فاشلة، حاول بعد '+m+' دقيقة')}
+const btn=$('loginBtn');btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin ml-2"></i> جارٍ التحقق...';
+const db=loadDB();const user=db.users.find(u=>u.email===email);
+const hash=await sha256(pass);
+if(!user||user.passHash!==hash){rec.count=(rec.count||0)+1;if(rec.count>=5){rec.until=Date.now()+10*60000;rec.count=0;showAlert('loginAlert','error','تجاوزت الحد الأقصى للمحاولات، تم الإيقاف لمدة 10 دقائق')}else{showAlert('loginAlert','error','بيانات الدخول غير صحيحة (المحاولة '+rec.count+' من 5)')}at[email]=rec;setAttempts(at);btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket ml-2"></i> دخول آمن ';return}
+if(!user.active){btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket ml-2"></i> دخول آمن ';return showAlert('loginAlert','error','تم تعطيل هذا الحساب، يرجى مراجعة الإدارة')}
+at[email]={count:0,until:0};setAttempts(at);setSession({id:user.id});
+btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-right-to-bracket ml-2"></i> دخول آمن ';
+toast('success','مرحباً بعودتك','تم تسجيل الدخول بنجاح، أهلاً '+user.name.split(' ')[0]);
+go(isAdmin(user)?'adminDash':'studentDash');
+}
+function logout(){setSession(null);currentTicketId=null;updateHeader();toast('info','تم تسجيل الخروج','تم إنهاء الجلست بأمان، نراك قريباً');go('home')}
+function openForgot(){$('forgotModal').classList.remove('hidden')}
+function closeForgot(){$('forgotModal').classList.add('hidden')}
+async function doForgot(){const email=$('fgEmail').value.trim().toLowerCase(),np=$('fgPass').value;if(!email||np.length<6){toast('error','بيانات ناقصة','أدخل البريد وكلمة مرور جديدة (6+ أحرف)');return}const db=loadDB();const u=db.users.find(x=>x.email===email);if(!u){toast('error','غير موجود','لا يوجد حساب بهذا البريد');return}u.passHash=await sha256(np);saveDB(db);closeForgot();toast('success','تمت إعادة التعيين','يمكنك الآن تسجيل الدخول بكلمة المرور الجديدة')}
+
+async function submitTicket(e){e.preventDefault();hideAlert('ticketAlert');
+const u=currentUser();if(!u||isAdmin(u)){showAlert('ticketAlert','error','يجب تسجيل الدخول بحساب طالب لتقديم طلب');return}
+const name=$('tName').value.trim(),dept=$('tDept').value,stage=$('tStage').value,msg=$('tMsg').value.trim();
+const study=(document.querySelector('input[name="studyType"]:checked')||{}).value;
+if(!name||!dept||!stage||!study)return showAlert('ticketAlert','error','يرجى ملء جميع الحقول المطلوبة');
+if(msg.length<10)return showAlert('ticketAlert','error','نص الشكوى قصير جداً (الحد الأدنى 10 أحرف)');
+const btn=$('sendTicketBtn');btn.disabled=true;btn.innerHTML='<i class="fa-solid fa-spinner fa-spin ml-2"></i> جارٍ الإرسال...';
+const db=loadDB();const num='KUT-2026-'+String(db.seq).padStart(4,'0');db.seq++;
+const t={id:uid('t'),number:num,studentId:u.id,studentName:name,dept,stage,studyType:study,message:msg,status:'جديد',createdAt:nowISO(),updatedAt:nowISO(),unreadAdmin:true,unreadStudent:false};
+db.tickets.push(t);
+db.messages.push({id:uid('m'),ticketId:t.id,senderId:u.id,senderRole:'student',text:msg,createdAt:nowISO()});
+const admin=db.users.find(x=>x.role==='admin');
+if(admin)db.notifications.push({id:uid('n'),userId:admin.id,title:'طلب جديد وارد 📩',body:name+' قدّم طلباً جديداً ('+num+') في '+dept,type:'new_ticket',ticketId:t.id,read:false,createdAt:nowISO()});
+saveDB(db);lastTicketId=t.id;currentTicketId=t.id;returnView=isAdmin(u)?'inbox':'myTickets';
+$('tMsg').value='';$('msgCount').textContent='0';
+btn.disabled=false;btn.innerHTML='<i class="fa-solid fa-paper-plane ml-2"></i> إرسال الطلب ';
+$('succNum').textContent=num;$('succDate').textContent=fmtDate(t.createdAt);
+toast('success','تم إرسال طلبك','رقم التتبع: '+num);go('success');updateHeader();
+}
+
+function openTicket(id){if(!id)return;const db=loadDB();const t=db.tickets.find(x=>x.id===id);if(!t){toast('error','غير موجود','لم يتم العثور على الطلب');return}
+const u=currentUser();if(!u){go('login');return}
+if(!isAdmin(u)&&t.studentId!==u.id){toast('error','غير مصرح','لا يمكنك عرض طلبات الطلاب الآخرين');return}
+currentTicketId=id;const cu=currentUser();returnView=isAdmin(cu)?'inbox':'myTickets';go('ticket');renderTicket();
+}
+function backFromTicket(){go(returnView||dashTarget())}
+function renderTicket(){const db=loadDB();const t=db.tickets.find(x=>x.id===currentTicketId);if(!t){go(dashTarget());return}
+const u=currentUser();const stu=db.users.find(x=>x.id===t.studentId);
+if(isAdmin(u)){t.unreadAdmin=false}else{t.unreadStudent=false}
+db.notifications.forEach(n=>{if(n.ticketId===t.id&&n.userId===u.id)n.read=true});saveDB(db);updateHeader();
+$('ticketHead').innerHTML=`<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4"><div><p class="text-xs text-gray-400 font-bold mb-1">رقم الطلب</p><h2 class="font-black text-navy-900 text-lg" dir="ltr">${esc(t.number)}</h2></div><div class="flex items-center gap-2">${statusBadge(t.status)}<span class="text-[11px] font-bold text-gray-400">${timeAgo(t.createdAt)}</span></div></div>
+<div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
+<div class="bg-gray-50 rounded-2xl p-3"><p class="text-[11px] text-gray-400 font-bold mb-1"><i class="fa-solid fa-user ml-1"></i> الطالب</p><p class="font-black">${esc(t.studentName)}</p><p class="text-[11px] text-gray-500" dir="ltr">${esc(stu?stu.email:'')}</p></div>
+<div class="bg-gray-50 rounded-2xl p-3"><p class="text-[11px] text-gray-400 font-bold mb-1"><i class="fa-solid fa-building ml-1"></i> القسم</p><p class="font-black text-xs leading-relaxed">${esc(t.dept)}</p></div>
+<div class="bg-gray-50 rounded-2xl p-3"><p class="text-[11px] text-gray-400 font-bold mb-1"><i class="fa-solid fa-layer-group ml-1"></i> المرحلة / الدراسة</p><p class="font-black text-xs">${esc(t.stage)} • ${esc(t.studyType)}</p></div>
+<div class="bg-gray-50 rounded-2xl p-3"><p class="text-[11px] text-gray-400 font-bold mb-1"><i class="fa-solid fa-calendar ml-1"></i> تاريخ الإرسال</p><p class="font-black text-xs">${esc(fmtDate(t.createdAt))}</p></div>
+</div>`;
+const msgs=db.messages.filter(m=>m.ticketId===t.id).sort((a,b)=>new Date(a.createdAt)-new Date(b.createdAt));
+const box=$('chatBox');
+if(!msgs.length)box.innerHTML='<p class="text-center text-sm text-gray-400 font-bold py-8">لا توجد رسائل بعد</p>';
+else box.innerHTML=msgs.map(m=>{const mine=m.senderId===u.id;const adminMsg=m.senderRole==='admin';
+return `<div class="msg-in flex ${mine?'justify-start':'justify-start'} gap-2"><div class="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center font-black text-sm ${adminMsg?'bg-gradient-to-br from-gold-400 to-gold-600 text-navy-900':'bg-navy-900 text-gold-400'}">${adminMsg?'<i class="fa-solid fa-user-tie"></i>':esc(avatarLetter(t.studentName))}</div><div class="max-w-[82%]"><div class="${adminMsg?'chat-admin':'chat-student'} p-3.5 text-sm leading-loose font-medium">${esc(m.text).replace(/\n/g,'<br>')}</div><p class="text-[11px] text-gray-400 font-bold mt-1">${adminMsg?'الأستاذ المسؤول':'أنت'} • ${esc(fmtDate(m.createdAt))}</p></div></div>`}).join('');
+box.scrollTop=box.scrollHeight;
+const closed=t.status==='مغلق';
+$('replyArea').innerHTML=closed?`<div class="bg-gray-100 rounded-2xl p-4 text-center text-sm font-black text-gray-500"><i class="fa-solid fa-lock ml-2"></i> هذا الطلب مغلق ولا يمكن الرد عليه ${isAdmin(u)?'— يمكنك إعادة فتحه من الأسفل':''}</div>`
+:`<div class="flex gap-2"><textarea id="replyText" rows="2" placeholder="${isAdmin(u)?'اكتب ردك إلى الطالب...':'اكتب ردك أو استفساراً إضافياً...'}" class="input-f flex-1 rounded-2xl px-4 py-3 text-sm font-bold resize-none"></textarea><button onclick="sendReply()" class="btn-gold rounded-2xl px-5 font-black text-sm shrink-0"><i class="fa-solid fa-paper-plane ml-1"></i> إرسال</button></div>`;
+const tools=$('adminTicketTools');
+if(isAdmin(u)){tools.classList.remove('hidden');$('statusChanger').innerHTML=STATUSES.map(s=>`<option ${s===t.status?'selected':''}>${s}</option>`).join('')}else tools.classList.add('hidden');
+}
+function sendReply(){const ta=$('replyText');if(!ta)return;const text=ta.value.trim();if(text.length<2){toast('warn','رسالة قصيرة','اكتب رداً واضحاً قبل الإرسال');return}
+const db=loadDB();const t=db.tickets.find(x=>x.id===currentTicketId);if(!t)return;const u=currentUser();if(!u)return;
+if(t.status==='مغلق'){toast('error','الطلب مغلق','لا يمكن الرد على طلب مغلق');return}
+db.messages.push({id:uid('m'),ticketId:t.id,senderId:u.id,senderRole:isAdmin(u)?'admin':'student',text,createdAt:nowISO()});
+t.updatedAt=nowISO();
+if(isAdmin(u)){t.unreadStudent=true;t.unreadAdmin=false;if(t.status==='جديد'||t.status==='قيد المعالجة')t.status='تمت الإجابة';
+db.notifications.push({id:uid('n'),userId:t.studentId,title:'رد جديد من الأستاذ 💬',body:'رد الأستاذ المسؤول على طلبك ('+t.number+')',type:'reply',ticketId:t.id,read:false,createdAt:nowISO()});
+}else{t.unreadAdmin=true;t.unreadStudent=false;if(t.status==='تمت الإجابة'||t.status==='مغلق')t.status='قيد المعالجة';
+const admin=db.users.find(x=>x.role==='admin');if(admin)db.notifications.push({id:uid('n'),userId:admin.id,title:'رد جديد من طالب 💬',body:t.studentName+' رد على الطلب ('+t.number+')',type:'reply',ticketId:t.id,read:false,createdAt:nowISO()})}
+saveDB(db);toast('success','تم إرسال الرد','وصلت رسالتك مع إشعار فوري');renderTicket();updateHeader();
+}
+function changeStatus(id,st){const db=loadDB();const t=db.tickets.find(x=>x.id===id);if(!t)return;t.status=st;t.updatedAt=nowISO();
+db.notifications.push({id:uid('n'),userId:t.studentId,title:'تحديث حالة الطلب 🔄',body:'تم تغيير حالة طلبك ('+t.number+') إلى: '+st,type:'status',ticketId:t.id,read:false,createdAt:nowISO()});
+saveDB(db);toast('info','تم تحديث الحالة','أصبحت حالة الطلب: '+st);renderTicket();updateHeader();
+}
+function closeTicket(id){askConfirm('إغلاق الطلب','هل تريد إغلاق هذا الطلب؟ لن يتمكن الطالب من الرد بعد الإغلاق.',()=>changeStatus(id,'مغلق'))}
+function reopenTicket(id){changeStatus(id,'قيد المعالجة');toast('success','تمت إعادة الفتح','أصبح الطلب قيد المعالجة مجدداً')}
+
+function renderHomeStats(){const db=loadDB();const students=db.users.filter(u=>u.role==='student').length;
+animNum('heroUsers',students);animNum('statH1',db.tickets.length);animNum('statH2',db.tickets.filter(t=>t.status==='تمت الإجابة').length);
+if(db.tickets.length){const last=[...db.tickets].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt))[0];$('heroTickId').textContent=last.number}
+document.querySelectorAll('#view-home .count-up[data-count]').forEach(el=>animNumEl(el,parseInt(el.dataset.count)));}
+function animNum(id,to){const el=$(id);if(!el)return;animNumEl(el,to)}
+function animNumEl(el,to){let cur=0;const step=Math.max(1,Math.ceil(to/30));clearInterval(el._t);el._t=setInterval(()=>{cur+=step;if(cur>=to){cur=to;clearInterval(el._t)}el.textContent=cur},40)}
+
+function ticketCard(t,showName){return `<div onclick="openTicket('${t.id}')" class="ticket-row cursor-pointer bg-white rounded-2xl border p-4 flex flex-col sm:flex-row sm:items-center gap-3">
+<div class="flex-1 min-w-0"><div class="flex items-center gap-2 flex-wrap mb-1"><span class="font-black text-navy-900 text-sm" dir="ltr">${esc(t.number)}</span>${statusBadge(t.status)}${t.unreadAdmin&&showName?'<span class="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">غير مقروء</span>':''}${t.unreadStudent&&!showName?'<span class="bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full">رد جديد</span>':''}</div>
+${showName?`<p class="font-black text-sm mb-1"><i class="fa-solid fa-user text-gold-500 ml-1"></i>${esc(t.studentName)} <span class="text-gray-400 font-bold text-xs">• ${esc(t.dept)}</span></p>`:''}
+<p class="text-sm text-gray-500 leading-relaxed truncate">${esc(t.message)}</p>
+<p class="text-[11px] text-gray-400 font-bold mt-1.5"><i class="fa-regular fa-clock ml-1"></i>${esc(fmtDate(t.createdAt))} • ${esc(t.stage)} • ${esc(t.studyType)}</p></div>
+<span class="shrink-0 w-10 h-10 rounded-xl bg-navy-900/5 text-navy-900 flex items-center justify-center"><i class="fa-solid fa-chevron-left"></i></span></div>`}
+
+function renderStudentDash(){const u=currentUser();if(!u)return;const db=loadDB();
+const mine=db.tickets.filter(t=>t.studentId===u.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+$('stdName').textContent=u.name;$('stdEmail').textContent=u.email;$('stdAvatar').textContent=avatarLetter(u.name);$('stdHello').textContent=u.name.split(' ')[0];
+$('stdTickCount').textContent=mine.length;
+animNum('sStatAll',mine.length);animNum('sStatNew',mine.filter(t=>t.status==='جديد'||t.status==='قيد المعالجة').length);animNum('sStatAns',mine.filter(t=>t.status==='تمت الإجابة').length);
+const unread=db.notifications.filter(n=>n.userId===u.id&&!n.read).length;animNum('sStatNotif',unread);
+$('stdRecent').innerHTML=mine.length?mine.slice(0,3).map(t=>ticketCard(t,false)).join(''):'<div class="text-center py-8 text-sm text-gray-400 font-bold">لم تقدّم أي طلب بعد — <button onclick="go(\'newTicket\')" class="text-gold-600 hover:underline">قدّم طلبك الأول</button></div>';
+const notifs=db.notifications.filter(n=>n.userId===u.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,4);
+$('stdRecentNotif').innerHTML=notifs.length?notifs.map(n=>`<div onclick="${n.ticketId?`openTicket('${n.ticketId}')`:`go('notifications')`}" class="cursor-pointer flex gap-3 items-start ${n.read?'bg-gray-50':'bg-gold-500/10 border border-gold-500/30'} rounded-2xl p-3"><span class="w-9 h-9 rounded-xl ${n.read?'bg-gray-200 text-gray-500':'bg-gold-500 text-navy-900'} flex items-center justify-center shrink-0"><i class="fa-solid fa-bell"></i></span><div class="min-w-0"><p class="font-black text-sm">${esc(n.title)}</p><p class="text-xs text-gray-500 truncate">${esc(n.body)}</p></div></div>`).join(''):'<p class="text-center text-sm text-gray-400 font-bold py-4">لا توجد إشعارات بعد</p>';
+updateHeader();
+}
+function renderMyTickets(){const u=currentUser();if(!u)return;const db=loadDB();
+const q=($('mySearch').value||'').trim(),f=$('myFilter').value;
+let mine=db.tickets.filter(t=>t.studentId===u.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+if(f)mine=mine.filter(t=>t.status===f);
+if(q)mine=mine.filter(t=>(t.number+t.message+t.dept).includes(q));
+$('myTicketsList').innerHTML=mine.length?mine.map(t=>ticketCard(t,false)).join(''):'<div class="bg-white rounded-3xl border p-10 text-center"><div class="w-16 h-16 mx-auto rounded-2xl bg-gray-100 text-gray-400 flex items-center justify-center text-2xl mb-3"><i class="fa-solid fa-folder-open"></i></div><p class="font-black text-navy-900">لا توجد طلبات مطابقة</p><p class="text-sm text-gray-500 mt-1">جرّب تعديل البحث أو قدّم طلباً جديداً</p></div>';
+}
+function renderAdminDash(){const db=loadDB();
+animNum('aStatAll',db.tickets.length);animNum('aStatNew',db.tickets.filter(t=>t.status==='جديد').length);animNum('aStatProg',db.tickets.filter(t=>t.status==='قيد المعالجة').length);animNum('aStatAns',db.tickets.filter(t=>t.status==='تمت الإجابة').length);
+const recent=[...db.tickets].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,5);
+$('admRecent').innerHTML=recent.length?recent.map(t=>ticketCard(t,true)).join(''):'<p class="text-center text-sm text-gray-400 font-bold py-6">لا توجد طلبات واردة بعد</p>';
+drawCharts(db);updateHeader();
+}
+function drawCharts(db){try{
+const counts=STATUSES.map(s=>db.tickets.filter(t=>t.status===s).length);
+const ctx1=$('chStatus');if(ctx1){if(ch1)ch1.destroy();Ch1=new Chart(ctx1,{type:'doughnut',data:{labels:STATUSES,datasets:[{data:counts,backgroundColor:['#EF4444','#F59E0B','#10B981','#64748B'],borderWidth:3,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{family:'Cairo',weight:'bold'}}}}}})}
+const depts=['صحة المجتمع','المحاسبة','الكهروميكانيك','الوقود والطاقة'];
+const dc=[db.tickets.filter(t=>t.dept.includes('صحة')).length,db.tickets.filter(t=>t.dept.includes('المحاسبة')).length,db.tickets.filter(t=>t.dept.includes('الكهروميكانيك')).length,db.tickets.filter(t=>t.dept.includes('الوقود')).length];
+const ctx2=$('chDept');if(ctx2){if(ch2)ch2.destroy();Ch2=new Chart(ctx2,{type:'bar',data:{labels:depts,datasets:[{data:dc,backgroundColor:['#10B981','#16336B','#C9A227','#0EA5E9'],borderRadius:10}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{stepSize:1}},x:{ticks:{font:{family:'Cairo',size:11,weight:'bold'}}}}}})}
+}catch(e){}}
+function refreshAdmin(manual){renderAdminDash();renderInbox();if(manual)toast('success','تم التحديث','تم تحديث البيانات والإحصائيات')}
+function renderInbox(){const list=$('inboxList');if(!list)return;const db=loadDB();
+const q=($('fSearch').value||'').trim(),d=$('fDept').value,st=$('fStage').value,su=$('fStudy').value,s=$('fStatus').value,dt=$('fDate').value;
+let arr=[...db.tickets].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+if(q)arr=arr.filter(t=>(t.number+t.message+t.studentName+t.dept).includes(q));
+if(d)arr=arr.filter(t=>t.dept===d);if(st)arr=arr.filter(t=>t.stage===st);if(su)arr=arr.filter(t=>t.studyType===su);if(s)arr=arr.filter(t=>t.status===s);
+if(dt)arr=arr.filter(t=>new Date(t.createdAt).toISOString().slice(0,10)===dt);
+$('inboxTotal').textContent=arr.length;
+list.innerHTML=arr.length?arr.map(t=>ticketCard(t,true)).join(''):'<div class="bg-white rounded-3xl border p-10 text-center"><p class="font-black text-navy-900">لا توجد نتائج مطابقة للتصفية</p></div>';
+updateHeader();
+}
+function clearFilters(){$('fSearch').value='';$('fDept').value='';$('fStage').value='';$('fStudy').value='';$('fStatus').value='';$('fDate').value='';renderInbox()}
+function renderNotifications(){const u=currentUser();if(!u)return;const db=loadDB();
+const arr=db.notifications.filter(n=>n.userId===u.id).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+$('notifList').innerHTML=arr.length?arr.map(n=>`<div onclick="${n.ticketId?`openTicket('${n.ticketId}')`:''}" class="${n.ticketId?'cursor-pointer hover:shadow-card':''} ${n.read?'bg-white':'bg-white border-gold-500/50 border-2'} rounded-2xl shadow-sm border p-4 flex gap-3 items-start transition"><span class="w-11 h-11 rounded-xl shrink-0 flex items-center justify-center ${n.read?'bg-gray-100 text-gray-500':'bg-navy-900 text-gold-400'}"><i class="fa-solid ${n.type==='reply'?'fa-comment-dots':n.type==='new_ticket'?'fa-envelope-open-text':n.type==='status'?'fa-rotate':'fa-bell'}"></i></span><div class="flex-1 min-w-0"><div class="flex items-center gap-2"><p class="font-black text-sm">${esc(n.title)}</p>${!n.read?'<span class="w-2 h-2 rounded-full bg-red-500"></span>':''}</div><p class="text-sm text-gray-500 leading-relaxed mt-0.5">${esc(n.body)}</p><p class="text-[11px] text-gray-400 font-bold mt-1">${esc(fmtDate(n.createdAt))} • ${timeAgo(n.createdAt)}</p></div></div>`).join(''):'<div class="bg-white rounded-3xl border p-10 text-center"><p class="font-black text-navy-900">لا توجد إشعارات</p></div>';
+}
+function markAllRead(){const u=currentUser();if(!u)return;const db=loadDB();db.notifications.forEach(n=>{if(n.userId===u.id)n.read=true});saveDB(db);renderNotifications();updateHeader();toast('success','تم','تم تعيين جميع الإشعارات كمقروءة')}
+function renderUsers(){const db=loadDB();const q=($('uSearch').value||'').trim();
+let arr=db.users.filter(u=>u.role==='student').sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+if(q)arr=arr.filter(u=>(u.name+u.email).includes(q));
+$('usersBody').innerHTML=arr.length?arr.map(u=>{const c=db.tickets.filter(t=>t.studentId===u.id).length;
+return `<tr class="border-t"><td class="p-4"><div class="flex items-center gap-2"><span class="w-9 h-9 rounded-xl bg-navy-900 text-gold-400 flex items-center justify-center font-black text-sm">${esc(avatarLetter(u.name))}</span><span class="font-black">${esc(u.name)}</span></div></td><td class="p-4 text-gray-500" dir="ltr">${esc(u.email)}</td><td class="p-4 text-center"><span class="bg-navy-900 text-white text-xs font-black px-2.5 py-1 rounded-full">${c}</span></td><td class="p-4 text-center text-xs text-gray-500">${esc(fmtDate(u.createdAt))}</td><td class="p-4 text-center">${u.active?'<span class="bg-green-100 text-green-700 text-xs font-black px-3 py-1 rounded-full">نشط</span>':'<span class="bg-red-100 text-red-600 text-xs font-black px-3 py-1 rounded-full">معطّل</span>'}</td><td class="p-4 text-center"><div class="flex justify-center gap-1.5"><button onclick="toggleUser('${u.id}')" class="px-3 py-1.5 rounded-lg text-xs font-black ${u.active?'bg-red-50 text-red-600 hover:bg-red-600 hover:text-white':'bg-green-50 text-green-600 hover:bg-green-600 hover:text-white'} transition">${u.active?'تعطيل':'تفعيل'}</button><button onclick="deleteUser('${u.id}')" class="px-3 py-1.5 rounded-lg text-xs font-black bg-gray-100 text-gray-600 hover:bg-gray-800 hover:text-white transition">حذف</button></div></td></tr>`}).join(''):'<tr><td colspan="6" class="p-8 text-center font-bold text-gray-400">لا يوجد طلاب مسجلون</td></tr>';
+}
+function toggleUser(id){const db=loadDB();const u=db.users.find(x=>x.id===id);if(!u)return;u.active=!u.active;saveDB(db);renderUsers();toast(u.active?'success':'warn',u.active?'تم تفعيل الحساب':'تم تعطيل الحساب',u.name)}
+function deleteUser(id){const db=loadDB();const u=db.users.find(x=>x.id===id);if(!u)return;askConfirm('حذف الحساب','سيتم حذف حساب '+u.name+' وجميع طلباته نهائياً. هل أنت متأكد؟',()=>{let d=loadDB();d.users=d.users.filter(x=>x.id!==id);const tids=d.tickets.filter(t=>t.studentId===id).map(t=>t.id);d.tickets=d.tickets.filter(t=>t.studentId!==id);d.messages=d.messages.filter(m=>!tids.includes(m.ticketId));d.notifications=d.notifications.filter(n=>n.userId!==id);saveDB(d);renderUsers();toast('success','تم الحذف','تم حذف الحساب وبياناته')})}
+function renderProfile(){const u=currentUser();if(!u)return;$('profName').textContent=u.name;$('profEmail').textContent=u.email;$('profAvatar').textContent=avatarLetter(u.name);
+$('profRole').textContent=isAdmin(u)?'الأستاذ المسؤول':'حساب طالب';$('pName').value=u.name;$('pPhone').value=u.phone||'';
+}
+function saveProfile(){const db=loadDB();const u=currentUser();const rec=db.users.find(x=>x.id===u.id);const n=$('pName').value.trim();if(n.length<3)return showAlert('profAlert','error','الاسم قصير جداً');rec.name=n;rec.phone=$('pPhone').value.trim();saveDB(db);renderProfile();updateHeader();showAlert('profAlert','success','تم حفظ التعديلات بنجاح');toast('success','تم الحفظ','تم تحديث بياناتك الشخصية')}
+async function changePassword(){const o=$('pwOld').value,n1=$('pwNew').value,n2=$('pwNew2').value;if(n1.length<6)return showAlert('profAlert','error','كلمة المرور الجديدة قصيرة');if(n1!==n2)return showAlert('profAlert','error','تأكيد كلمة المرور غير متطابق');const db=loadDB();const rec=db.users.find(x=>x.id===currentUser().id);const ho=await sha256(o);if(ho!==rec.passHash)return showAlert('profAlert','error','كلمة المرور الحالية غير صحيحة');rec.passHash=await sha256(n1);saveDB(db);$('pwOld').value=$('pwNew').value=$('pwNew2').value='';showAlert('profAlert','success','تم تحديث كلمة المرور بنجاح');toast('success','تم التحديث','تم تغيير كلمة المرور')}
+function exportCSV(){const db=loadDB();if(!db.tickets.length){toast('warn','لا توجد بيانات','لا يوجد طلبات لتصديرها');return}
+let csv='Number,Student,Dept,Stage,Study,Status,Date,Message\n';
+db.tickets.forEach(t=>{csv+=`"${t.number}","${t.studentName}","${t.dept}","${t.stage}","${t.studyType}","${t.status}","${t.createdAt}","${String(t.message).replace(/"/g,'""')}"\n`});
+const blob=new Blob(["\ufeff"+csv],{type:'text/csv;charset=utf-8'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='KUT-tickets.csv';a.click();toast('success','تم التصدير','تم تنزيل ملف CSV بنجاح')}
+
+// UI effects
+window.addEventListener('scroll',()=>{const h=document.documentElement;const p=(h.scrollTop)/(h.scrollHeight-h.clientHeight)*100;$('scrollProgress').style.width=p+'%';$('mainHeader').classList.toggle('scrolled',h.scrollTop>10)});
+function tickClock(){try{$('clockTop').textContent=new Date().toLocaleTimeString('ar-IQ',{hour:'2-digit',minute:'2-digit'})}catch(e){}}
+setInterval(tickClock,1000);tickClock();
+function initReveal(){const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}}),{threshold:.12});document.querySelectorAll('.reveal').forEach(el=>obs.observe(el))}
+setInterval(()=>{const inbox=$('view-inbox');if(inbox&&inbox.classList.contains('active')&&currentUser()&&isAdmin(currentUser()))renderInbox()},5000);
+
+(async function init(){$('yearNow').textContent=new Date().getFullYear();await ensureSeed();initReveal();renderHomeStats();updateHeader();const u=currentUser();if(u){/* stay on home, header shows user */}})();
+</script>
+</body>
+</html>
